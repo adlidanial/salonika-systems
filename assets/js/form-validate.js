@@ -10,7 +10,7 @@
             form.addEventListener('submit', function (event) {
 
             var failed = false;
-            console.log($("[name='chkbox[]']:checked").length);
+            // console.log($("[name='chkbox[]']:checked").length);
             if ($("[name='chkbox[]']:checked").length == 0) {
                 $("[name='chkbox[]']").attr('required', true);
                 failed = true;

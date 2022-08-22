@@ -1,10 +1,64 @@
 <?php
-    require_once "bigData.php";
-
+    // require_once "bigData.php";
+    require_once './includes/toyyibpay.php';
+    session_start();
     if(isset($_POST['name']) && isset($_POST['email']) && isset($_POST['phonenumber']) && isset($_POST['chkbox']))
     {
-        $bigdata = new bigData($_POST['name'], $_POST['email'], $_POST['phonenumber'], $_POST['chkbox']);
-        $bigdata->saveOrder();
+        if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
+            $link = "https";
+        else
+            $link = "http";
+        
+        $link .= "://";
+        $link .= $_SERVER['HTTP_HOST'];   
+        $link .= chop(dirname($_SERVER['REQUEST_URI']), '\\');
+
+        $_SESSION['referenceno'] = 'SS'.date('dmyHms');
+        $_SESSION['name'] = $_POST['name'];
+        $_SESSION['email'] = $_POST['email'];
+        $_SESSION['phonenumber'] = $_POST['phonenumber'];
+        $_SESSION['price'] = $_POST['price'];
+        $_SESSION['chkbox'] = $_POST['chkbox'];
+
+        $data_string = array(
+            'userSecretKey'=> SECRET_KEY,
+            'categoryCode'=> CATEGORY_CODE,
+            'billName'=> BILL_NAME,
+            'billDescription'=> BILL_DESCRIPTION,
+            'billPriceSetting'=>1,
+            'billPayorInfo'=>1,
+            'billAmount'=>$_SESSION['price'] * 100,
+            'billReturnUrl'=>$link. '/receipt.php',
+            'billCallbackUrl'=>'',
+            'billExternalReferenceNo'=> $_SESSION['referenceno'],
+            'billTo'=>$_SESSION['name'],
+            'billEmail'=>$_SESSION['email'],
+            'billPhone'=>$_SESSION['phonenumber'],
+            'billSplitPayment'=>0,
+            'billSplitPaymentArgs'=>'',
+            'billPaymentChannel'=>0,
+        );
+
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_POST, 1);
+        // Development ToyyibPay
+        curl_setopt($curl, CURLOPT_URL, 'https://dev.toyyibpay.com/index.php/api/createBill');  
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        $result = curl_exec($curl);
+        $info = curl_getinfo($curl);  
+        curl_close($curl);
+        $obj = json_decode($result, true);
+
+        $billcode = $obj[0]['BillCode'];
+
+        // Development ToyyibPay                 
+        echo "
+        <script>
+        window.alert('Your order has been submitted. Please make a payment first.');
+        window.location.href='https://dev.toyyibpay.com/".$billcode."';
+        </script>";
     }
     
 ?>
@@ -219,21 +273,24 @@
                             <div class="card-body">
                                 <p class="fs-4 text-center"><strong>Customer's Detail</strong></p>
                                 <div>
-                                    <i class="fa fa-asterisk fa-1x" style="color: red" aria-hidden="true"></i><label class="form-label" for="validationName">Name</label>
+                                    <i class="fa fa-asterisk fa-1x" style="color: red" aria-hidden="true"></i>
+                                    <label class="form-label" for="validationName">Name</label>
                                     <input class="form-control" type="text" name="name" id="validationName" required>
                                     <div class="invalid-feedback">
                                         Please provide a valid name.
                                     </div>
                                 </div>
                                 <div>
-                                    <i class="fa fa-asterisk fa-1x" style="color: red" aria-hidden="true"></i><label class="form-label" for="validationEmail">Email</label>
+                                    <i class="fa fa-asterisk fa-1x" style="color: red" aria-hidden="true"></i>
+                                    <label class="form-label" for="validationEmail">Email</label>
                                     <input class="form-control" type="email" name="email" id="validationEmail" required>
                                     <div class="invalid-feedback">
                                         Please provide a valid email.
                                     </div>
                                 </div>
                                 <div>
-                                    <i class="fa fa-asterisk fa-1x" style="color: red" aria-hidden="true"></i><label class="form-label" for="validationPhoneNumber">Phone Number</label>
+                                    <i class="fa fa-asterisk fa-1x" style="color: red" aria-hidden="true"></i>
+                                    <label class="form-label" for="validationPhoneNumber">Phone Number</label>
                                     <input class="form-control" type="tel" name="phonenumber" id="validationPhoneNumber" required>
                                     <div class="invalid-feedback">
                                         Please provide a valid phone number.
@@ -241,9 +298,10 @@
                                 </div>
                             </div>
                         </div>
-                        <input class="d-none" type="text" id="price" readonly>
+                        <input class="d-none" type="text" id="price" name="price" readonly>
                         <div class="d-grid flex-grow-1">
-                            <button class="btn btn-dark border rounded-pill" type="submit" style="margin-top: 10px;margin-bottom: 10px;">Checkout</button>
+                            <button class="btn btn-dark border rounded-pill" type="submit" style="margin-top: 10px;margin-bottom: 10px;" 
+                            onclick="return confirm('Are you sure to proceed the checkout?');">Checkout</button>
                             <p class="text-center">Payment method using <strong>ToyyibPay</strong></p>
                         </div>
                     </form>

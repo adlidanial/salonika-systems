@@ -1,3 +1,30 @@
+<?php
+    require_once './admin.php';
+
+    $admin = new Admin();
+    $result = $admin->getNotificationPendingOrder();
+    $listorder = $admin->getPlaceOrder();
+
+    if(isset($_POST['status']) && isset($_POST['orderid']))
+    {
+        if($admin->updateStatusOrder($_POST['status'], $_POST['orderid']))
+        {
+            echo "
+                <script>
+                window.alert('Status order has been updated.');
+                window.location.href='./queue.php';
+                </script>";
+        }
+        else
+        {
+            echo "
+                <script>
+                window.alert('There is a problem to update status order.');
+                </script>";
+        }
+    }
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -9,18 +36,21 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-light navbar-expand bg-light navigation-clean">
+<nav class="navbar navbar-light navbar-expand bg-light navigation-clean">
         <div class="container">
-          <a class="navbar-brand" href="#">SALONIKA SYSTEMS</a>
-          <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"></button>
+            <a class="navbar-brand" href="#">SALONIKA SYSTEMS</a>
+            <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"></button>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav">
-                    <li class="nav-item"></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./dashboard.php">DASHBOARD</a>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">MAINTENANCE</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="customer.html">CUSTOMER</a><a class="dropdown-item" href="#">HISTORY</a>
-                            <a class="dropdown-item" href="#">QUEUE</a>
+                            <a class="dropdown-item" href="./customer.php">CUSTOMER</a>
+                            <a class="dropdown-item" href="./history.php">HISTORY</a>
+                            <a class="dropdown-item" href="./queue.php">QUEUE</a>
                         </div>
                     </li>
                 </ul>
@@ -31,12 +61,15 @@
                                 <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
                                 <path d="M256 32V51.2C329 66.03 384 130.6 384 208V226.8C384 273.9 401.3 319.2 432.5 354.4L439.9 362.7C448.3 372.2 450.4 385.6 445.2 397.1C440 408.6 428.6 416 416 416H32C19.4 416 7.971 408.6 2.809 397.1C-2.353 385.6-.2883 372.2 8.084 362.7L15.5 354.4C46.74 319.2 64 273.9 64 226.8V208C64 130.6 118.1 66.03 192 51.2V32C192 14.33 206.3 0 224 0C241.7 0 256 14.33 256 32H256zM224 512C207 512 190.7 505.3 178.7 493.3C166.7 481.3 160 464.1 160 448H288C288 464.1 281.3 481.3 269.3 493.3C257.3 505.3 240.1 512 224 512z"></path>
                             </svg>
-                            <span class="badge rounded-pill bg-danger">2</span>
-                        </a>
-                        <div class="dropdown-menu">
+                            <span class="badge rounded-pill bg-danger"><?php echo count($result); ?></span></a>
+                        <div class="dropdown-menu dropdown-menu-end">
                             <h6 class="dropdown-header">Notification</h6>
-                            <a class="dropdown-item" href="#">Notification 1</a>
-                            <a class="dropdown-item" href="#">Notification 2</a>
+                            <?php for($i=0; $i<count($result); $i++){ ?>
+                            <a class="dropdown-item" href="./queue.php?id=<?php echo $result[$i]['PK_ID']; ?>">
+                                <strong>Pending Order</strong><br>
+                                <span>Payment for the order <strong><?php echo $result[$i]['REFERENCE_NO']; ?></strong>
+                                has been confirm.</span> </a>
+                            <?php } ?>
                         </div>
                     </li>
                     <li class="nav-item dropdown" style="border-radius: 10px;border-width: 1.5px;border-style: solid;">
@@ -46,10 +79,8 @@
                                 <path d="M224 256c70.7 0 128-57.31 128-128s-57.3-128-128-128C153.3 0 96 57.31 96 128S153.3 256 224 256zM274.7 304H173.3C77.61 304 0 381.6 0 477.3c0 19.14 15.52 34.67 34.66 34.67h378.7C432.5 512 448 496.5 448 477.3C448 381.6 370.4 304 274.7 304z"></path>
                             </svg>
                         </a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">First Item</a>
-                            <a class="dropdown-item" href="#">Second Item</a>
-                            <a class="dropdown-item" href="#">Third Item</a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="./login.php">Log Out</a>
                         </div>
                     </li>
                 </ul>
@@ -59,60 +90,79 @@
     <section style="padding-top: 10px;padding-bottom: 10px;">
         <div class="container" style="padding-top: 50px;padding-bottom: 50px;">
             <div class="row">
-                <div class="col-lg-4 col-xl-4 col-xxl-8 offset-xxl-2">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="text-center card-title">Queue</h4>
-                            <div class="bootstrap_datatables">
-                                <div class="container py-5">
-                                    <header class="text-center text-black">
-                                        <h1 class="display-4">Bootstrap Datatables</h1>
-                                    </header>
-                                    <div class="row py-5">
-                                        <div class="col-lg-10 mx-auto">
-                                            <div class="card rounded shadow border-0">
-                                                <div class="card-body p-5 bg-white rounded">
-                                                    <div class="table-responsive">
-                                                        <table id="example" style="width:100%" class="table table-striped table-bordered">
-                                                            <thead>
-                                                                <tr>
-                                                                <th>Name</th>
-                                                                <th>Position</th>
-                                                                <th>Office</th>
-                                                                <th>Age</th>
-                                                                <th>Start date</th>
-                                                                <th>Salary</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                <td>Tiger Nixon</td>
-                                                                <td>System Architect</td>
-                                                                <td>Edinburgh</td>
-                                                                <td>61</td>
-                                                                <td>2011/04/25</td>
-                                                                <td>$320,800</td>
-                                                                </tr>
-                                                                <tr>
-                                                                <td>Garrett Winters</td>
-                                                                <td>Accountant</td>
-                                                                <td>Tokyo</td>
-                                                                <td>63</td>
-                                                                <td>2011/07/25</td>
-                                                                <td>$170,750</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
+                <div class="col-xl-8 col-xxl-10 offset-xl-2 offset-xxl-1">
+                    <h4 class="text-center card-title">Queue</h4>
+                    <div class="bootstrap_datatables">
+                        <div class="container py-5">
+                            <div class="row py-5">
+                                <div class="col-lg-10 mx-auto">
+                                    <div class="card rounded shadow border-0">
+                                        <div class="card-body p-5 bg-white rounded">
+                                            <div class="table-responsive">
+                                                <table id="example" style="width:100%" class="table table-striped table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                        <th>No</th>
+                                                        <th>Name</th>
+                                                        <th>Order</th>
+                                                        <th>Date/Time</th>
+                                                        <th>Status</th>
+                                                        <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php
+                                                            $count = 1;
+                                                            for($i=0; $i<count($listorder); $i++){ 
+                                                                $date = new DateTime($listorder[$i]['DATE_UPDATED']);
+                                                                echo "<tr>";
+                                                                echo "<td>".$count++."</td>";
+                                                                echo "<td>".$listorder[$i]['NAME']."</td>";
+                                                                echo "<td>".$listorder[$i]['REFERENCE_NO']."</td>";
+                                                                echo "<td>".date_format($date, "d F Y h:i A")."</td>";
+                                                                echo "<td>";if($listorder[$i]['STATUS'] == 0) echo "Pending"; elseif($listorder[$i]['STATUS'] == 1) echo "Process"; elseif($listorder[$i]['STATUS'] == 2) echo "Done";"</td>";
+                                                                echo "<td><button class='btn btn-secondary text-white order-Dialog' data-id='".$listorder[$i]['PK_ID']."' data-bs-toggle='modal' data-bs-target='#exampleModal'><i class='far fa-edit'></i></button></td>";
+                                                            }
+                                                        ?>
+                                                    </tbody>
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Order Details</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                                                            <div class="modal-body">
+                                                                <input class="d-none" type="text" name="orderid" id="orderid">
+                                                                <div>
+                                                                    <label class="form-label" for="validationName">Status</label>
+                                                                    <select class="form-select" aria-label="Default select example" name="status">
+                                                                        <option selected disabled>Please select</option>
+                                                                        <option value="0">Pending</option>
+                                                                        <option value="1">Process</option>
+                                                                        <option value="2">Done</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary text-white" data-bs-dismiss="modal">Close</button>
+                                                                <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure to change?');">Save</button>
+                                                            </div>
+                                                        </form>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                    </div>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <p class="text-center">No new customers</p>
                     </div>
+                    <p class="text-center">No new customers</p>
                 </div>
             </div>
         </div>
@@ -123,6 +173,12 @@
         </div>
     </footer>
     <?php include "./includes/footer.html" ?>
+    <script>
+        $(document).on("click", ".order-Dialog", function () {
+            var orderId = $(this).data('id');
+            $(".modal-body #orderid").val( orderId );
+        });
+    </script>
 </body>
 
 </html>

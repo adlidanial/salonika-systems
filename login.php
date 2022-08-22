@@ -1,3 +1,17 @@
+<?php
+    require_once './admin.php';
+
+    if(isset($_POST['username']) && isset($_POST['password']))
+    {
+        $admin = new Admin($_POST['username'], $_POST['password']);
+        if($admin->validateLogin())
+        {
+            header('Location: ./dashboard.php');
+        }
+    }
+
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -27,17 +41,17 @@
             <div class="col-md-8 col-lg-6 col-xl-6 col-xxl-6 offset-md-2 offset-lg-3 offset-xl-3 offset-xxl-3">
                 <div class="card bg-light">
                     <div class="card-body">
-                        <form>
+                        <form method="post" action="<?php echo $_SERVER["PHP_SELF"]; ?>">
                             <div>
                                 <label class="form-label">Username</label>
-                                <input class="form-control" type="text">
+                                <input class="form-control" type="text" name="username">
                             </div>
                             <div>
                                 <label class="form-label">Password</label>
-                                <input class="form-control" type="text">
+                                <input class="form-control" type="password" name="password">
                             </div>
                             <div class="d-grid" style="padding-top: 10px;">
-                                <button class="btn btn-dark" type="button">LOGIN</button>
+                                <button class="btn btn-dark" type="submit">LOGIN</button>
                             </div>
                         </form>
                     </div>

@@ -1,3 +1,10 @@
+<?php
+    require_once './admin.php';
+
+    $admin = new Admin();
+    $result = $admin->getNotificationPendingOrder();
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -9,19 +16,21 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-light navbar-expand bg-light navigation-clean">
+    <nav class="navbar navbar-light navbar-expand-lg bg-light navigation-clean">
         <div class="container">
             <a class="navbar-brand" href="#">SALONIKA SYSTEMS</a>
-            <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"></button>
+            <button data-bs-toggle="collapse" class="navbar-toggler bg-dark" data-bs-target="#navcol-1"></button>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav">
-                    <li class="nav-item"></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./dashboard.php">DASHBOARD</a>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">MAINTENANCE</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">CUSTOMER</a>
-                            <a class="dropdown-item" href="#">HISTORY</a>
-                            <a class="dropdown-item" href="#">QUEUE</a>
+                            <a class="dropdown-item" href="./customer.php">CUSTOMER</a>
+                            <a class="dropdown-item" href="./history.php">HISTORY</a>
+                            <a class="dropdown-item" href="./queue.php">QUEUE</a>
                         </div>
                     </li>
                 </ul>
@@ -32,11 +41,15 @@
                                 <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
                                 <path d="M256 32V51.2C329 66.03 384 130.6 384 208V226.8C384 273.9 401.3 319.2 432.5 354.4L439.9 362.7C448.3 372.2 450.4 385.6 445.2 397.1C440 408.6 428.6 416 416 416H32C19.4 416 7.971 408.6 2.809 397.1C-2.353 385.6-.2883 372.2 8.084 362.7L15.5 354.4C46.74 319.2 64 273.9 64 226.8V208C64 130.6 118.1 66.03 192 51.2V32C192 14.33 206.3 0 224 0C241.7 0 256 14.33 256 32H256zM224 512C207 512 190.7 505.3 178.7 493.3C166.7 481.3 160 464.1 160 448H288C288 464.1 281.3 481.3 269.3 493.3C257.3 505.3 240.1 512 224 512z"></path>
                             </svg>
-                            <span class="badge rounded-pill bg-danger">2</span></a>
-                        <div class="dropdown-menu">
+                            <span class="badge rounded-pill bg-danger"><?php echo count($result); ?></span></a>
+                        <div class="dropdown-menu dropdown-menu-end">
                             <h6 class="dropdown-header">Notification</h6>
-                            <a class="dropdown-item" href="#">Notification 1</a>
-                            <a class="dropdown-item" href="#">Notification 2</a>
+                            <?php for($i=0; $i<count($result); $i++){ ?>
+                            <a class="dropdown-item" href="./queue.php">
+                                <strong>Pending Order</strong><br>
+                                <span>Payment for the order <strong><?php echo $result[$i]['REFERENCE_NO']; ?></strong>
+                                has been confirm.</span> </a>
+                            <?php } ?>
                         </div>
                     </li>
                     <li class="nav-item dropdown" style="border-radius: 10px;border-width: 1.5px;border-style: solid;">
@@ -46,10 +59,8 @@
                                 <path d="M224 256c70.7 0 128-57.31 128-128s-57.3-128-128-128C153.3 0 96 57.31 96 128S153.3 256 224 256zM274.7 304H173.3C77.61 304 0 381.6 0 477.3c0 19.14 15.52 34.67 34.66 34.67h378.7C432.5 512 448 496.5 448 477.3C448 381.6 370.4 304 274.7 304z"></path>
                             </svg>
                         </a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">First Item</a>
-                            <a class="dropdown-item" href="#">Second Item</a>
-                            <a class="dropdown-item" href="#">Third Item</a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="./login.php">Log Out</a>
                         </div>
                     </li>
                 </ul>
@@ -59,26 +70,26 @@
     <section style="padding-top: 10px;padding-bottom: 10px;">
         <div class="container" style="padding-top: 50px;padding-bottom: 50px;">
             <div class="row">
-                <div class="col-lg-4 col-xl-4 col-xxl-8 offset-xxl-2">
+                <div class="col-lg-8 col-xl-8 col-xxl-8 offset-lg-2 offset-xl-2 offset-xxl-2">
                     <div class="card">
                         <div class="card-body">
                             <h4 class="text-center card-title">Notifications</h4>
+                            <?php for($i=0; $i<count($result); $i++){ ?>
                             <div class="alert alert-secondary" role="alert">
                                 <div class="d-flex">
-                                    <h4>Order Pending</h4>
-                                    <p class="d-flex flex-grow-1 justify-content-end">20 August 2022 1:30PM</p>
+                                    <h4>ORDER #<?php echo $result[$i]['REFERENCE_NO']; ?></h4>
+                                    <p class="d-flex flex-grow-1 justify-content-end">
+                                        <?php 
+                                            $date = new DateTime($result[$i]['DATE_CREATED']); 
+                                            echo date_format($date, "d F Y h:i A"); 
+                                        ?>
+                                    </p>
                                 </div>
-                                <a class="alert-link fs-6" href="#">Click Here</a>
+                                <a class="alert-link fs-6" href="./queue.php">Click Here</a>
                             </div>
-                            <div class="alert alert-secondary" role="alert">
-                                <div class="d-flex">
-                                    <h4>Order Pending</h4>
-                                    <p class="d-flex flex-grow-1 justify-content-end">19 August 2022 10:30AM</p>
-                                </div>
-                                <a class="alert-link fs-6" href="#">Click Here</a>
-                            </div>
+                            <?php } ?>
                         </div>
-                        <p class="text-center">No new notifications</p>
+                        <p class="text-center"><?php (count($result) == 0 ? "No new notifications" : "" ) ?></p>
                     </div>
                 </div>
             </div>
