@@ -1,3 +1,14 @@
+<?php
+    require_once "bigData.php";
+
+    if(isset($_POST['name']) && isset($_POST['email']) && isset($_POST['phonenumber']) && isset($_POST['chkbox']))
+    {
+        $bigdata = new bigData($_POST['name'], $_POST['email'], $_POST['phonenumber'], $_POST['chkbox']);
+        $bigdata->saveOrder();
+    }
+    
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -7,14 +18,16 @@
     <title>Home - Salonika Systems</title>
     <?php include "./includes/header.html" ?>
 </head>
-
 <body>
     <nav class="navbar navbar-light navbar-expand bg-light navigation-clean">
-        <div class="container"><a class="navbar-brand" href="#">SALONIKA SYSTEMS</a><button data-bs-toggle="collapse" 
-        class="navbar-toggler" data-bs-target="#navcol-1"></button>
+        <div class="container">
+            <a class="navbar-brand" href="#">SALONIKA SYSTEMS</a>
+            <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"></button>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active fw-bold" href="login.php">LOGIN</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link active fw-bold" href="login.php">LOGIN</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -44,13 +57,13 @@
             <div class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000" id="carousel-1" style="max-height: 400px;">
                 <div class="carousel-inner" style="max-height: 400px;">
                     <div class="carousel-item active">
-                        <img class="w-100 d-block" src="assets/img/bg-showcase-2.jpg" alt="Slide Image">
+                        <img class="w-100 d-block" src="assets/img/bg-slide-1.jpg" alt="Slide Image">
                     </div>
                     <div class="carousel-item">
-                        <img class="w-100 d-block" src="assets/img/bg-showcase-1.jpg" alt="Slide Image">
+                        <img class="w-100 d-block" src="assets/img/bg-slide-2.jpg" alt="Slide Image">
                     </div>
                     <div class="carousel-item">
-                        <img class="w-100 d-block" src="assets/img/bg-masthead.jpg" alt="Slide Image">
+                        <img class="w-100 d-block" src="assets/img/bg-slide-3.jpg" alt="Slide Image">
                     </div>
                 </div>
                 <div>
@@ -109,64 +122,67 @@
         <div class="container" id="order-form" style="text-align: left;">
             <div class="row">
                 <div class="col-lg-8 col-xl-8 col-xxl-8 offset-lg-2 offset-xl-2 offset-xxl-2">
-                    <form style="padding: 10px;">
+                    <form style="padding: 10px;" class="needs-validation" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" novalidate>
                         <div class="card shadow-sm">
                             <div class="card-body">
                                 <p class="fs-4 text-center">
                                     <strong>Category</strong>
                                 </p>
                                 <div class="alert alert-secondary" role="alert">
-                                    <span>Choose any 3 category<strong> RM10</strong></span>
+                                    <span>Choose any 3 category (<strong>except</strong> comment category)<strong> RM10</strong></span>
                                     <br><span>Comment category<strong> RM30</strong></span>
                                 </div>
                                 <div class="border rounded-0 shadow-sm d-flex mb-3" style="padding: 20px;">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="formCheck-1" style="padding: 20px;border-radius: 25px;">
-                                        <label class="form-check-label" for="formCheck-1" style="padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;">Type</label>
+                                    <div class="form-check flex-grow-1">
+                                        <input class="form-check-input" type="checkbox" id="formCheck-type" name="chkbox[]" style="padding: 20px;border-radius: 25px;" value="Type" required>
+                                        <label class="form-check-label d-flex" for="formCheck-type" style="padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;">Type</label>
                                     </div>
-                                    <label class="form-label fs-5 fw-bold d-xxl-flex flex-grow-1 justify-content-xxl-end" style="padding-top: 10px;padding-bottom: 10px;">RM4</label>
+                                    <label class="form-label fs-5 fw-bold text-end d-xxl-flex" style="padding-top: 10px;padding-bottom: 10px;">RM4</label>
                                 </div>
                                 <div class="border rounded-0 shadow-sm d-flex mb-3" style="padding: 20px;">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="formCheck-7" style="padding: 20px;border-radius: 25px;">
-                                        <label class="form-check-label" for="formCheck-7" style="padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;">Material</label>
+                                    <div class="form-check flex-grow-1">
+                                        <input class="form-check-input" type="checkbox" id="formCheck-material" name="chkbox[]" style="padding: 20px;border-radius: 25px;" value="Material" required>
+                                        <label class="form-check-label d-flex" for="formCheck-material" style="padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;">Material</label>
                                     </div>
-                                    <label class="form-label fs-5 fw-bold d-xxl-flex flex-grow-1 justify-content-xxl-end" style="padding-top: 10px;padding-bottom: 10px;">RM4</label>
+                                    <label class="form-label fs-5 fw-bold text-end d-xxl-flex" style="padding-top: 10px;padding-bottom: 10px;">RM4</label>
                                 </div>
                                 <div class="border rounded-0 shadow-sm d-flex mb-3" style="padding: 20px;">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="formCheck-6" style="padding: 20px;border-radius: 25px;">
-                                        <label class="form-check-label" for="formCheck-6" style="padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;">Price Top 20 Seller</label>
+                                    <div class="form-check flex-grow-1">
+                                        <input class="form-check-input" type="checkbox" id="formCheck-price" name="chkbox[]" style="padding: 20px;border-radius: 25px;" value="Price Top 20 Seller" required>
+                                        <label class="form-check-label d-flex" for="formCheck-price" style="padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;">Price Top 20 Seller</label>
                                     </div>
-                                    <label class="form-label fs-5 fw-bold d-xxl-flex flex-grow-1 justify-content-xxl-end" style="padding-top: 10px;padding-bottom: 10px;">RM4</label>
+                                    <label class="form-label fs-5 fw-bold text-end d-xxl-flex" style="padding-top: 10px;padding-bottom: 10px;">RM4</label>
                                 </div>
                                 <div class="border rounded-0 shadow-sm d-flex mb-3" style="padding: 20px;">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="formCheck-5" style="padding: 20px;border-radius: 25px;">
-                                        <label class="form-check-label" for="formCheck-5" style="padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;">Colour</label>
+                                    <div class="form-check flex-grow-1">
+                                        <input class="form-check-input" type="checkbox" id="formCheck-colour" name="chkbox[]" style="padding: 20px;border-radius: 25px;" value="Colour" required>
+                                        <label class="form-check-label d-flex" for="formCheck-colour" style="padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;">Colour</label>
                                     </div>
-                                    <label class="form-label fs-5 fw-bold d-xxl-flex flex-grow-1 justify-content-xxl-end" style="padding-top: 10px;padding-bottom: 10px;">RM4</label>
+                                    <label class="form-label fs-5 fw-bold text-end d-xxl-flex" style="padding-top: 10px;padding-bottom: 10px;">RM4</label>
                                 </div>
                                 <div class="border rounded-0 shadow-sm d-flex mb-3" style="padding: 20px;">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="formCheck-4" style="padding: 20px;border-radius: 25px;">
-                                        <label class="form-check-label" for="formCheck-4" style="padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;">Size</label>
+                                    <div class="form-check flex-grow-1">
+                                        <input class="form-check-input" type="checkbox" id="formCheck-size" name="chkbox[]" style="padding: 20px;border-radius: 25px;" value="Size" required>
+                                        <label class="form-check-label d-flex" for="formCheck-size" style="padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;">Size</label>
                                     </div>
-                                    <label class="form-label fs-5 fw-bold d-xxl-flex flex-grow-1 justify-content-xxl-end" style="padding-top: 10px;padding-bottom: 10px;">RM4</label>
+                                    <label class="form-label fs-5 fw-bold text-end d-xxl-flex" style="padding-top: 10px;padding-bottom: 10px;">RM4</label>
                                 </div>
                                 <div class="border rounded-0 shadow-sm d-flex mb-3" style="padding: 20px;">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="formCheck-3" style="padding: 20px;border-radius: 25px;">
-                                        <label class="form-check-label" for="formCheck-3" style="padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;">Seller Top 20</label>
+                                    <div class="form-check flex-grow-1">
+                                        <input class="form-check-input" type="checkbox" id="formCheck-seller" name="chkbox[]" style="padding: 20px;border-radius: 25px;" value="Seller Top 20" required>
+                                        <label class="form-check-label d-flex" for="formCheck-seller" style="padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;">Seller Top 20</label>
                                     </div>
-                                    <label class="form-label fs-5 fw-bold d-xxl-flex flex-grow-1 justify-content-xxl-end" style="padding-top: 10px;padding-bottom: 10px;">RM4</label>
+                                    <label class="form-label fs-5 fw-bold text-end d-xxl-flex" style="padding-top: 10px;padding-bottom: 10px;">RM4</label>
                                 </div>
                                 <div class="border rounded-0 shadow-sm d-flex mb-3" style="padding: 20px;">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="formCheck-2" style="border-radius: 25px;padding: 20px;">
-                                        <label class="form-check-label d-table" for="formCheck-2" style="padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;">Comment ( Seller Top 20, Quality Product, Customer Service )</label>
+                                    <div class="form-check flex-grow-1"> 
+                                        <input class="form-check-input" type="checkbox" id="formCheck-comment" name="chkbox[]" style="border-radius: 25px;padding: 20px;" value="Comment ( Seller Top 20, Quality Product, Customer Service )" required>
+                                        <label class="form-check-label d-flex" for="formCheck-comment" style="padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;">Comment ( Seller Top 20, Quality Product, Customer Service )</label>
+                                        <div class="invalid-feedback">
+                                            Please choose at least one.
+                                        </div>
                                     </div>
-                                    <label class="form-label fs-5 fw-bold d-xxl-flex flex-grow-1 justify-content-xxl-end" style="padding-top: 10px;padding-bottom: 10px;">RM30</label>
+                                    <label class="form-label fs-5 fw-bold text-end d-xxl-flex" style="padding-top: 10px;padding-bottom: 10px;">RM30</label>
                                 </div>
                             </div>
                         </div><br>
@@ -178,21 +194,20 @@
                                     <hr>
                                     <div class="table-responsive">
                                         <table class="table table-borderless">
-                                            <tbody>
-                                                <tr>
-                                                    <td>Type</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Colour</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Seller Top 20</td>
-                                                </tr>
+                                            <tbody id="list-category">
                                             </tbody>
                                             <tfoot>
                                                 <tr class="fs-4 fw-bold">
                                                     <td>Total</td>
-                                                    <td class="text-end">RM10</td>
+                                                    <td class="text-end">RM<span id="totalprice">0.00</span></td>
+                                                </tr>
+                                                <tr class="fs-6">
+                                                    <td>Discount Price</td>
+                                                    <td class="text-end">RM<span id="discount">0.00</span></td>
+                                                </tr>
+                                                <tr class="fs-4 fw-bold">
+                                                    <td>Grand Total</td>
+                                                    <td class="text-end">RM<span id="grandtotal">0.00</span></td>
                                                 </tr>
                                             </tfoot>
                                         </table>
@@ -204,19 +219,29 @@
                             <div class="card-body">
                                 <p class="fs-4 text-center"><strong>Customer's Detail</strong></p>
                                 <div>
-                                    <label class="form-label">Name</label>
-                                    <input class="form-control" type="text" name="name">
+                                    <i class="fa fa-asterisk fa-1x" style="color: red" aria-hidden="true"></i><label class="form-label" for="validationName">Name</label>
+                                    <input class="form-control" type="text" name="name" id="validationName" required>
+                                    <div class="invalid-feedback">
+                                        Please provide a valid name.
+                                    </div>
                                 </div>
                                 <div>
-                                    <label class="form-label">Email</label>
-                                    <input class="form-control" type="email" name="email">
-                                    <div>
-                                        <label class="form-label">Phone Number</label>
-                                        <input class="form-control" type="tel" name="phonenumber">
+                                    <i class="fa fa-asterisk fa-1x" style="color: red" aria-hidden="true"></i><label class="form-label" for="validationEmail">Email</label>
+                                    <input class="form-control" type="email" name="email" id="validationEmail" required>
+                                    <div class="invalid-feedback">
+                                        Please provide a valid email.
+                                    </div>
+                                </div>
+                                <div>
+                                    <i class="fa fa-asterisk fa-1x" style="color: red" aria-hidden="true"></i><label class="form-label" for="validationPhoneNumber">Phone Number</label>
+                                    <input class="form-control" type="tel" name="phonenumber" id="validationPhoneNumber" required>
+                                    <div class="invalid-feedback">
+                                        Please provide a valid phone number.
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <input class="d-none" type="text" id="price" readonly>
                         <div class="d-grid flex-grow-1">
                             <button class="btn btn-dark border rounded-pill" type="submit" style="margin-top: 10px;margin-bottom: 10px;">Checkout</button>
                             <p class="text-center">Payment method using <strong>ToyyibPay</strong></p>
@@ -232,6 +257,8 @@
         </div>
     </footer>
     <?php include "./includes/footer.html" ?>
+    <script type="text/javascript" src="./assets/js/add-cart.js"></script>
+    <script type="text/javascript" src="./assets/js/form-validate.js"></script>
 </body>
 
 </html>

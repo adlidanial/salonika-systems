@@ -1,0 +1,24 @@
+<?php
+
+    class dbConnect
+    {
+        private $servername = "localhost";
+        private $user = "root";
+        private $pass = "admin";
+        private $db = "salonika_systems";
+        private $connect;
+
+        protected function __construct()
+        {
+            try{
+                $this->connect = new PDO("mysql:host=".$this->servername.";dbname=".$this->db, $this->user, $this->pass);
+                $this->connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            }
+            catch(PDOException $e){
+                echo "Connection failed: " . $e->getMessage();
+            }
+            
+        }
+    }
+
+?>
