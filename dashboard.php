@@ -1,8 +1,13 @@
 <?php
     require_once './admin.php';
-
-    $admin = new Admin();
-    $result = $admin->getNotificationPendingOrder();
+    session_start();
+    if(isset($_SESSION['username']) && isset($_SESSION['password']))
+    {
+        $admin = new Admin($_SESSION['username'], $_SESSION['password']);
+        $result = $admin->getNotificationPendingOrder();
+    }
+    else
+        header("Location: ./login.php");
 ?>
 
 <!DOCTYPE html>
@@ -23,14 +28,14 @@
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="./dashboard.php">DASHBOARD</a>
+                        <a class="nav-link" href="./dashboard.php">Dashboard</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">MAINTENANCE</a>
+                        <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">Maintenance</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="./customer.php">CUSTOMER</a>
-                            <a class="dropdown-item" href="./history.php">HISTORY</a>
-                            <a class="dropdown-item" href="./queue.php">QUEUE</a>
+                            <a class="dropdown-item" href="./customer.php">Customer</a>
+                            <a class="dropdown-item" href="./history.php">History</a>
+                            <a class="dropdown-item" href="./queue.php">Queue</a>
                         </div>
                     </li>
                 </ul>
@@ -52,15 +57,15 @@
                             <?php } ?>
                         </div>
                     </li>
-                    <li class="nav-item dropdown" style="border-radius: 10px;border-width: 1.5px;border-style: solid;">
-                        <a class="nav-link fw-bolder" aria-expanded="false" data-bs-toggle="dropdown" href="#">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="-32 0 512 512" width="1em" height="1em" fill="currentColor" class="fs-4">
                                 <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
                                 <path d="M224 256c70.7 0 128-57.31 128-128s-57.3-128-128-128C153.3 0 96 57.31 96 128S153.3 256 224 256zM274.7 304H173.3C77.61 304 0 381.6 0 477.3c0 19.14 15.52 34.67 34.66 34.67h378.7C432.5 512 448 496.5 448 477.3C448 381.6 370.4 304 274.7 304z"></path>
                             </svg>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" href="./login.php">Log Out</a>
+                            <a class="dropdown-item" href="./logout.php">Log Out</a>
                         </div>
                     </li>
                 </ul>
@@ -95,7 +100,7 @@
             </div>
         </div>
     </section>
-    <footer class="bg-dark footer fixed-bottom" style="padding: 20px;">
+    <footer class="bg-dark footer" style="padding: 20px;">
         <div class="container">
             <h1 class="fs-5 text-center text-white">Copyright @ 2022</h1>
         </div>

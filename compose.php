@@ -6,7 +6,37 @@
     {
         $admin = new Admin($_SESSION['username'], $_SESSION['password']);
         $result = $admin->getNotificationPendingOrder();
-        $listcustomer = $admin->getCustomer();
+
+        if(isset($_POST['submit']))
+        {
+            $email = $_POST['email'];
+            $message = $_POST['message'];
+            $file = (isset($_FILES['attachments']) ? $_FILES['attachments'] : "");
+
+            if($admin->setComposeEmail($email, $message, $file))
+            {
+                echo "
+                <script>
+                window.alert('Email successful.');
+                window.location.href='./queue.php';
+                </script>";
+            }
+        }
+        else if(isset($_GET['userid']))
+        {
+            $cust = $admin->getCustomerById($_GET['userid']);
+            $status = $admin->getStatusOrderByCustomerId($_GET['userid']);
+            if(count($cust) == 0)
+            {
+                echo "
+                    <script>
+                    window.alert('There is no user exist in the system.');
+                    window.location.href='./queue.php';
+                    </script>";
+            }
+        }
+        else
+            header("Location: ./queue.php");
     }
     else
         header("Location: ./login.php");
@@ -18,16 +48,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Customer - Salonika Systems</title>
+    <title>Compose - Salonika Systems</title>
     <?php include "./includes/header.html" ?>
-
 </head>
 
 <body>
-    <nav class="navbar navbar-light navbar-expand-lg bg-light navigation-clean">
+    <nav class="navbar navbar-light navbar-expand bg-light navigation-clean">
         <div class="container">
             <a class="navbar-brand" href="#">SALONIKA SYSTEMS</a>
-            <button data-bs-toggle="collapse" class="navbar-toggler bg-dark" data-bs-target="#navcol-1"></button>
+            <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"></button>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav">
                     <li class="nav-item">
@@ -53,7 +82,7 @@
                         <div class="dropdown-menu dropdown-menu-end">
                             <h6 class="dropdown-header">Notification</h6>
                             <?php for($i=0; $i<count($result); $i++){ ?>
-                            <a class="dropdown-item" href="./queue.php">
+                            <a class="dropdown-item" href="./queue.php?id=<?php echo $result[$i]['PK_ID']; ?>">
                                 <strong>Pending Order</strong><br>
                                 <span>Payment for the order <strong><?php echo $result[$i]['REFERENCE_NO']; ?></strong>
                                 has been confirm.</span> </a>
@@ -68,7 +97,7 @@
                             </svg>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" href="./logout.php">Log Out</a>
+                            <a class="dropdown-item" href="./login.php">Log Out</a>
                         </div>
                     </li>
                 </ul>
@@ -78,48 +107,45 @@
     <section style="padding-top: 10px;padding-bottom: 10px;">
         <div class="container" style="padding-top: 50px;padding-bottom: 50px;">
             <div class="row">
-                <div class="col-xl-8 col-xxl-10 offset-xl-2 offset-xxl-1">
-                    <h4 class="text-center card-title">Customer</h4>
-                    <div class="bootstrap_datatables">
-                        <div class="container py-5">
-                            <div class="row py-5">
-                                <div class="col-lg-10 mx-auto">
-                                    <div class="card rounded shadow border-0">
-                                        <div class="card-body p-5 bg-white rounded">
-                                            <div class="table-responsive">
-                                                <table id="example" style="width:100%" class="table table-striped table-bordered">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>No</th>
-                                                            <th>Name</th>
-                                                            <th>Email</th>
-                                                            <th>Phone Number</th>
-                                                            <th class="d-none"></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <?php
-                                                            $count = 1;
-                                                            for($i=0; $i<count($listcustomer); $i++){ 
-                                                                echo "<tr>";
-                                                                echo "<td>".$count++."</td>";
-                                                                echo "<td>".$listcustomer[$i]['NAME']."</td>";
-                                                                echo "<td>".$listcustomer[$i]['EMAIL']."</td>";
-                                                                echo "<td>".$listcustomer[$i]['PHONE_NUMBER']."</td>";
-                                                                echo "<td class='d-none'></td>";
-                                                                echo "</tr>";
-                                                            }
-                                                        ?>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
+                <div class="col-lg-8 col-xl-8 col-xxl-8 offset-lg-2 offset-xl-2 offset-xxl-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="text-center card-title">Compose</h4>
+                            <div class="row">
+                                <div class="col text-end">
+                                    <button class="btn btn-secondary link-light" type="button" id="quick">Quick message</button>
+                                </div>
+                                <div class="col">
+                                    <button class="btn btn-info link-light" type="button" id="custom">Custom message</button>
                                 </div>
                             </div>
+                            <br>
+                            <form class="d-none" id="form-message" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" enctype="multipart/form-data">
+                                <input class="d-none form-control" type="text" name="status" id="status" value="<?php if($status['STATUS'] == 0) echo "0";
+                                elseif($status['STATUS'] == 1) echo "1";
+                                elseif($status['STATUS'] == 2) echo "2"; ?>" readonly disabled>
+
+                                <div>
+                                    <label class="form-label">Email</label>
+                                    <input class="form-control" type="text" value="<?php echo $cust['EMAIL']; ?>" name="email" readonly>
+                                </div>
+                                <div>
+                                    <label class="form-label">Message</label>
+                                    <textarea class="form-control" style="height: 150px;" id="message" name="message"></textarea>
+                                </div>
+                                <div>
+                                    <label class="form-label">Upload files</label>
+                                    <input class="form-control" type="file" name="attachments[]" multiple="multiple">
+                                </div>
+                                <br>
+                                <div class="d-grid">
+                                    <button class="btn btn-primary" type="submit" name="submit">Submit</button>
+                                    <hr>
+                                    <a class="btn btn-secondary text-light" href="./queue.php">Back</a>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                    <p class="text-center"><?php (count($listcustomer) == 0 ? "No new customer" : "") ?></p>
                 </div>
             </div>
         </div>
@@ -130,6 +156,7 @@
         </div>
     </footer>
     <?php include "./includes/footer.html" ?>
+    <script src="./assets/js/composer-email.js"></script>
 </body>
 
 </html>

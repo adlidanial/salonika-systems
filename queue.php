@@ -1,28 +1,34 @@
 <?php
     require_once './admin.php';
 
-    $admin = new Admin();
-    $result = $admin->getNotificationPendingOrder();
-    $listorder = $admin->getPlaceOrder();
-
-    if(isset($_POST['status']) && isset($_POST['orderid']))
+    session_start();
+    if(isset($_SESSION['username']) && isset($_SESSION['password']))
     {
-        if($admin->updateStatusOrder($_POST['status'], $_POST['orderid']))
+        $admin = new Admin($_SESSION['username'], $_SESSION['password']);
+        $result = $admin->getNotificationPendingOrder();
+        $listorder = $admin->getPlaceOrder();
+        if(isset($_POST['status']) && isset($_POST['orderid']))
         {
-            echo "
-                <script>
-                window.alert('Status order has been updated.');
-                window.location.href='./queue.php';
-                </script>";
+            if($admin->updateStatusOrder($_POST['status'], $_POST['orderid']))
+            {
+                echo "
+                    <script>
+                    window.alert('Status order has been updated.');
+                    window.location.href='./queue.php';
+                    </script>";
+            }
+            else
+            {
+                echo "
+                    <script>
+                    window.alert('There is a problem to update status order.');
+                    </script>";
+            }
         }
-        else
-        {
-            echo "
-                <script>
-                window.alert('There is a problem to update status order.');
-                </script>";
-        }
+
     }
+    else
+        header("Location: ./login.php");
 ?>
 
 <!DOCTYPE html>
@@ -36,21 +42,21 @@
 </head>
 
 <body>
-<nav class="navbar navbar-light navbar-expand bg-light navigation-clean">
+    <nav class="navbar navbar-light navbar-expand bg-light navigation-clean">
         <div class="container">
             <a class="navbar-brand" href="#">SALONIKA SYSTEMS</a>
             <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"></button>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="./dashboard.php">DASHBOARD</a>
+                        <a class="nav-link" href="./dashboard.php">Dashboard</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">MAINTENANCE</a>
+                        <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">Maintenance</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="./customer.php">CUSTOMER</a>
-                            <a class="dropdown-item" href="./history.php">HISTORY</a>
-                            <a class="dropdown-item" href="./queue.php">QUEUE</a>
+                            <a class="dropdown-item" href="./customer.php">Customer</a>
+                            <a class="dropdown-item" href="./history.php">History</a>
+                            <a class="dropdown-item" href="./queue.php">Queue</a>
                         </div>
                     </li>
                 </ul>
@@ -72,8 +78,8 @@
                             <?php } ?>
                         </div>
                     </li>
-                    <li class="nav-item dropdown" style="border-radius: 10px;border-width: 1.5px;border-style: solid;">
-                        <a class="nav-link fw-bolder" aria-expanded="false" data-bs-toggle="dropdown" href="#">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="-32 0 512 512" width="1em" height="1em" fill="currentColor" class="fs-4">
                                 <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
                                 <path d="M224 256c70.7 0 128-57.31 128-128s-57.3-128-128-128C153.3 0 96 57.31 96 128S153.3 256 224 256zM274.7 304H173.3C77.61 304 0 381.6 0 477.3c0 19.14 15.52 34.67 34.66 34.67h378.7C432.5 512 448 496.5 448 477.3C448 381.6 370.4 304 274.7 304z"></path>
@@ -121,7 +127,13 @@
                                                                 echo "<td>".$listorder[$i]['REFERENCE_NO']."</td>";
                                                                 echo "<td>".date_format($date, "d F Y h:i A")."</td>";
                                                                 echo "<td>";if($listorder[$i]['STATUS'] == 0) echo "Pending"; elseif($listorder[$i]['STATUS'] == 1) echo "Process"; elseif($listorder[$i]['STATUS'] == 2) echo "Done";"</td>";
-                                                                echo "<td><button class='btn btn-secondary text-white order-Dialog' data-id='".$listorder[$i]['PK_ID']."' data-bs-toggle='modal' data-bs-target='#exampleModal'><i class='far fa-edit'></i></button></td>";
+                                                                echo "<td>
+                                                                <button class='btn btn-sm btn-secondary text-white order-Dialog' data-id='".$listorder[$i]['PK_ID']."' data-bs-toggle='modal' data-bs-target='#exampleModal'>
+                                                                <i class='far fa-edit'></i>
+                                                                </button>
+                                                                <a href='./compose.php?userid=".$listorder[$i]['CUST_ID']."' class='btn btn-sm btn-success text-white'><i class='far fa-envelope'></i></a>
+                                                                </td>";
+                                                                echo "</tr>";
                                                             }
                                                         ?>
                                                     </tbody>
@@ -162,12 +174,12 @@
                             </div>
                         </div>
                     </div>
-                    <p class="text-center">No new customers</p>
+                    <p class="text-center"><?php (count($listorder) == 0 ? "No new queue" : "") ?></p>
                 </div>
             </div>
         </div>
     </section>
-    <footer class="bg-dark footer fixed-bottom" style="padding: 20px;">
+    <footer class="bg-dark footer" style="padding: 20px;">
         <div class="container">
             <h1 class="fs-5 text-center text-white">Copyright @ 2022</h1>
         </div>

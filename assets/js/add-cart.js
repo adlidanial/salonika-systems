@@ -14,7 +14,11 @@ $('#formCheck-type').click(function (){
     }
     $("#totalprice").text(totalprice+".00");
 
-    if(countcheck >= 3 && countcheck < 6){
+    if(countcheck >= 0 && countcheck < 3)
+    {
+        $("#discount").text(0+".00");  
+    }
+    else if(countcheck >= 3 && countcheck < 6){
         $("#discount").text(2+".00");  
     }
     else if(countcheck === 6){
@@ -38,7 +42,11 @@ $('#formCheck-material').click(function (){
     }  
     $("#totalprice").text(totalprice+".00");
 
-    if(countcheck >= 3 && countcheck < 6){
+    if(countcheck >= 0 && countcheck < 3)
+    {
+        $("#discount").text(0+".00");  
+    }
+    else if(countcheck >= 3 && countcheck < 6){
         $("#discount").text(2+".00");  
     }
     else if(countcheck === 6){
@@ -62,7 +70,11 @@ $('#formCheck-price').click(function (){
     }
     $("#totalprice").text(totalprice+".00");
 
-    if(countcheck >= 3 && countcheck < 6){
+    if(countcheck >= 0 && countcheck < 3)
+    {
+        $("#discount").text(0+".00");  
+    }
+    else if(countcheck >= 3 && countcheck < 6){
         $("#discount").text(2+".00");  
     }
     else if(countcheck === 6){
@@ -86,7 +98,11 @@ $('#formCheck-colour').click(function (){
     }
     $("#totalprice").text(totalprice+".00");
 
-    if(countcheck >= 3 && countcheck < 6){
+    if(countcheck >= 0 && countcheck < 3)
+    {
+        $("#discount").text(0+".00");  
+    }
+    else if(countcheck >= 3 && countcheck < 6){
         $("#discount").text(2+".00");  
     }
     else if(countcheck === 6){
@@ -110,7 +126,11 @@ $('#formCheck-seller').click(function (){
     }
     $("#totalprice").text(totalprice+".00");
 
-    if(countcheck >= 3 && countcheck < 6){
+    if(countcheck >= 0 && countcheck < 3)
+    {
+        $("#discount").text(0+".00");  
+    }
+    else if(countcheck >= 3 && countcheck < 6){
         $("#discount").text(2+".00");  
     }
     else if(countcheck === 6){
@@ -134,7 +154,11 @@ $('#formCheck-size').click(function (){
     }
     $("#totalprice").text(totalprice+".00");
 
-    if(countcheck >= 3 && countcheck < 6){
+    if(countcheck >= 0 && countcheck < 3)
+    {
+        $("#discount").text(0+".00");  
+    }
+    else if(countcheck >= 3 && countcheck < 6){
         $("#discount").text(2+".00");  
     }
     else if(countcheck === 6){
@@ -156,7 +180,11 @@ $('#formCheck-comment').click(function (){
     }
     $("#totalprice").text(totalprice+".00");
 
-    if(countcheck >= 3 && countcheck < 6){
+    if(countcheck >= 0 && countcheck < 3)
+    {
+        $("#discount").text(0+".00");  
+    }
+    else if(countcheck >= 3 && countcheck < 6){
         $("#discount").text(2+".00");  
     }
     else if(countcheck === 6){

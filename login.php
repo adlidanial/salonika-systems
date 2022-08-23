@@ -8,6 +8,13 @@
         {
             header('Location: ./dashboard.php');
         }
+        else
+        {
+            echo "
+            <script>
+            window.alert('Invalid username or password.');
+            </script>";
+        }
     }
 
 ?>
@@ -44,11 +51,11 @@
                         <form method="post" action="<?php echo $_SERVER["PHP_SELF"]; ?>">
                             <div>
                                 <label class="form-label">Username</label>
-                                <input class="form-control" type="text" name="username">
+                                <input class="form-control" type="text" name="username" autofocus required>
                             </div>
                             <div>
                                 <label class="form-label">Password</label>
-                                <input class="form-control" type="password" name="password">
+                                <input class="form-control" type="password" name="password" required>
                             </div>
                             <div class="d-grid" style="padding-top: 10px;">
                                 <button class="btn btn-dark" type="submit">LOGIN</button>
