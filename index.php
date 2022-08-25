@@ -294,11 +294,7 @@
                         </div>
                         <input class="d-none" type="text" id="price" name="price" readonly>
                         <div class="d-grid flex-grow-1">
-<<<<<<< HEAD
                             <button class="btn btn-dark border rounded-pill" type="submit" name="submit" style="margin-top: 10px;margin-bottom: 10px;" 
-=======
-                            <button class="btn btn-dark border rounded-pill" type="submit" style="margin-top: 10px;margin-bottom: 10px;" 
->>>>>>> main
                             onclick="return confirm('Are you sure to proceed the checkout?');">Checkout</button>
                             <p class="text-center">Payment method using <strong>ToyyibPay</strong></p>
                         </div>
