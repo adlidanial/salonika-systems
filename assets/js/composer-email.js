@@ -1,6 +1,10 @@
 $('#quick').click(function () {
     $('#form-message').removeAttr("class");
+<<<<<<< HEAD
     let message = "Greeting\r\n\r\n";
+=======
+    let message = "Greeting\n\n";
+>>>>>>> main
     let status = $('#status').val();
     if(status === "0")
     {
@@ -17,7 +21,11 @@ $('#quick').click(function () {
         message += "We have complete your order and we have attach the result" + 
         " from your requested purchase. Kindly email us if any further question.";
     }
+<<<<<<< HEAD
     message += "\r\n\r\nThank you."
+=======
+    message += "\n\nThank you."
+>>>>>>> main
     $('#message').text(message);
     $('#message').attr("readonly", "true");
 })

@@ -75,6 +75,7 @@
             {
                 $sql = "
                     SELECT NAME, CUSTOMER.PK_ID AS CUST_ID, PLACEORDER.PK_ID AS PK_ID, PLACEORDER.DATE_UPDATED AS DATE_UPDATED,  
+<<<<<<< HEAD
                     PLACEORDER.REFERENCE_NO AS REFERENCE_NO, PLACEORDER.STATUS AS STATUS, PLACEORDER.DATE_CREATED AS DATE_CREATED,
                     PLACEORDER.LIST_ORDER AS LIST_ORDER
                     FROM CUSTOMER
@@ -103,6 +104,9 @@
                     SELECT NAME, CUSTOMER.PK_ID AS CUST_ID, PLACEORDER.PK_ID AS PK_ID, PLACEORDER.DATE_UPDATED AS DATE_UPDATED,  
                     PLACEORDER.REFERENCE_NO AS REFERENCE_NO, PLACEORDER.STATUS AS STATUS, PLACEORDER.DATE_CREATED AS DATE_CREATED,
                     PLACEORDER.LIST_ORDER AS LIST_ORDER
+=======
+                    PLACEORDER.REFERENCE_NO AS REFERENCE_NO, PLACEORDER.STATUS AS STATUS, PLACEORDER.DATE_CREATED AS DATE_CREATED
+>>>>>>> main
                     FROM CUSTOMER
                     INNER JOIN PLACEORDER ON CUSTOMER.PK_ID = PLACEORDER.FK_ID_CUSTOMER
                     ORDER BY DATE_CREATED DESC
@@ -240,7 +244,11 @@
                 //Content
                 $mail->isHTML(true);                                  //Set email format to HTML
                 $mail->Subject = 'SALONIKA SYSTEMS';
+<<<<<<< HEAD
                 $mail->Body    = nl2br($message);
+=======
+                $mail->Body    = $message;
+>>>>>>> main
                 // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
                 $mail->send();
@@ -252,6 +260,7 @@
                 return false;
             }
         }
+<<<<<<< HEAD
 
         public function getParameter()
         {
@@ -456,5 +465,7 @@
                 echo "<script>alert('Error here:".$e."');</script>";
             }
         }
+=======
+>>>>>>> main
     }
 ?>

@@ -26,7 +26,23 @@
             <a class="navbar-brand" href="#">SALONIKA SYSTEMS</a>
             <button data-bs-toggle="collapse" class="navbar-toggler bg-dark" data-bs-target="#navcol-1"></button>
             <div class="collapse navbar-collapse" id="navcol-1">
+<<<<<<< HEAD
             <?php include "./includes/admin-nav.html"; ?>
+=======
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./dashboard.php">Dashboard</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">Maintenance</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="./customer.php">Customer</a>
+                            <a class="dropdown-item" href="./history.php">History</a>
+                            <a class="dropdown-item" href="./queue.php">Queue</a>
+                        </div>
+                    </li>
+                </ul>
+>>>>>>> main
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item dropdown">
                         <a class="nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">

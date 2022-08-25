@@ -110,6 +110,7 @@
                 $transid = $result['TOYYIBPAY_TRANSACTIONID'];
                 $statusid = $result['TOYYIBPAY_STATUSID'];
                 $price = $result['PRICE'];
+<<<<<<< HEAD
                 $date = $result['DATE_CREATED'];
 
                 return [$listorder, $referenceno, $transid, $statusid, $price, $date];
@@ -136,6 +137,10 @@
                 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 return $result;
+=======
+
+                return [$listorder, $referenceno, $transid, $statusid, $price];
+>>>>>>> main
 
             }
             catch(PDOException $e)
