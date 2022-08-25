@@ -37,11 +37,7 @@
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-<<<<<<< HEAD
                         <a class="nav-link active fw-bold text-white rounded" style="background-color:rgb(84, 186, 185);" href="login.php">LOGIN</a>
-=======
-                        <a class="nav-link active fw-bold" href="login.php">LOGIN</a>
->>>>>>> main
                     </li>
                 </ul>
             </div>

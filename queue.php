@@ -47,23 +47,7 @@
             <a class="navbar-brand" href="#">SALONIKA SYSTEMS</a>
             <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"></button>
             <div class="collapse navbar-collapse" id="navcol-1">
-<<<<<<< HEAD
             <?php include "./includes/admin-nav.html"; ?>
-=======
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="./dashboard.php">Dashboard</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">Maintenance</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="./customer.php">Customer</a>
-                            <a class="dropdown-item" href="./history.php">History</a>
-                            <a class="dropdown-item" href="./queue.php">Queue</a>
-                        </div>
-                    </li>
-                </ul>
->>>>>>> main
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item dropdown">
                         <a class="nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
@@ -114,12 +98,8 @@
                                                         <tr>
                                                         <th>No</th>
                                                         <th>Name</th>
-<<<<<<< HEAD
                                                         <th>Order No.</th>
                                                         <th>List Order</th>
-=======
-                                                        <th>Order</th>
->>>>>>> main
                                                         <th>Date/Time</th>
                                                         <th>Status</th>
                                                         <th>Action</th>
@@ -134,10 +114,7 @@
                                                                 echo "<td>".$count++."</td>";
                                                                 echo "<td>".$listorder[$i]['NAME']."</td>";
                                                                 echo "<td>".$listorder[$i]['REFERENCE_NO']."</td>";
-<<<<<<< HEAD
                                                                 echo "<td>".$listorder[$i]['LIST_ORDER']."</td>";
-=======
->>>>>>> main
                                                                 echo "<td>".date_format($date, "d F Y h:i A")."</td>";
                                                                 echo "<td>";if($listorder[$i]['STATUS'] == 0) echo "Pending"; elseif($listorder[$i]['STATUS'] == 1) echo "Process"; elseif($listorder[$i]['STATUS'] == 2) echo "Done";"</td>";
                                                                 echo "<td>
