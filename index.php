@@ -102,7 +102,6 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-5 col-xl-6 col-xxl-6 align-self-center" style="padding-top: 10px;padding-bottom: 10px;padding-right: 20px;padding-left: 20px;position: static;">
-<<<<<<< HEAD
                         <h1 class="text-white"><span style="color: rgb(84, 186, 185);">Big data insights</span> 
                         with Salonika Systems Sdn Bhd 
                         </h1>
@@ -111,15 +110,6 @@
                             , you may access whatever information you need for your business.
                         </p>
                         <a class="btn btn-light" role="button" href="#order-form">Get Started</a>
-=======
-                        <h1 class="text-white" style="font-size: 60px;">Landing Page - 
-                            <span style="color: rgb(84, 186, 185);">Big Data</span>
-                        </h1>
-                        <p class="text-white" style="font-size: 24px;">Provide the 
-                            <span style="color: rgb(84, 186, 185);">best result</span> of data to the customer.<br>
-                        </p>
-                        <a class="btn btn-light" role="button" href="#order-form">Order Here</a>
->>>>>>> main
                     </div>
                     <div class="col-lg-7 col-xl-6 col-xxl-6" style="padding-top: 10px;padding-bottom: 10px;padding-right: 20px;padding-left: 20px;">
                         <img class="img-fluid" src="assets/img/big-data.png">
@@ -130,7 +120,6 @@
     </header>
     <section class="text-center bg-light features-icons">
         <div class="container">
-<<<<<<< HEAD
             <h4>When it comes to business data needs, <span style="color: rgb(84, 186, 185);">Salonika Systems</span> is your go-to big data solution.</h4>
             <div class="row p-5">
                 <div class="col-sm align-self-center">
@@ -152,8 +141,6 @@
             </div>
         </div>
         <div class="container">
-=======
->>>>>>> main
             <div class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000" id="carousel-1" style="max-height: 400px;">
                 <div class="carousel-inner" style="max-height: 400px;">
                     <div class="carousel-item active">
@@ -245,59 +232,6 @@
                                     echo "</div>";
                                 } 
                                 ?>
-                                <div class="border rounded-0 shadow-sm d-flex mb-3" style="padding: 20px;">
-                                    <div class="form-check flex-grow-1">
-                                        <input class="form-check-input" type="checkbox" id="formCheck-type" name="chkbox[]" style="padding: 20px;border-radius: 25px;" value="Type" required>
-                                        <label class="form-check-label d-flex" for="formCheck-type" style="padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;">Type</label>
-                                    </div>
-                                    <label class="form-label fs-5 fw-bold text-end d-xxl-flex" style="padding-top: 10px;padding-bottom: 10px;">RM4</label>
-                                </div>
-                                <div class="border rounded-0 shadow-sm d-flex mb-3" style="padding: 20px;">
-                                    <div class="form-check flex-grow-1">
-                                        <input class="form-check-input" type="checkbox" id="formCheck-material" name="chkbox[]" style="padding: 20px;border-radius: 25px;" value="Material" required>
-                                        <label class="form-check-label d-flex" for="formCheck-material" style="padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;">Material</label>
-                                    </div>
-                                    <label class="form-label fs-5 fw-bold text-end d-xxl-flex" style="padding-top: 10px;padding-bottom: 10px;">RM4</label>
-                                </div>
-                                <div class="border rounded-0 shadow-sm d-flex mb-3" style="padding: 20px;">
-                                    <div class="form-check flex-grow-1">
-                                        <input class="form-check-input" type="checkbox" id="formCheck-price" name="chkbox[]" style="padding: 20px;border-radius: 25px;" value="Price Top 20 Seller" required>
-                                        <label class="form-check-label d-flex" for="formCheck-price" style="padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;">Price Top 20 Seller</label>
-                                    </div>
-                                    <label class="form-label fs-5 fw-bold text-end d-xxl-flex" style="padding-top: 10px;padding-bottom: 10px;">RM4</label>
-                                </div>
-                                <div class="border rounded-0 shadow-sm d-flex mb-3" style="padding: 20px;">
-                                    <div class="form-check flex-grow-1">
-                                        <input class="form-check-input" type="checkbox" id="formCheck-colour" name="chkbox[]" style="padding: 20px;border-radius: 25px;" value="Colour" required>
-                                        <label class="form-check-label d-flex" for="formCheck-colour" style="padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;">Colour</label>
-                                    </div>
-                                    <label class="form-label fs-5 fw-bold text-end d-xxl-flex" style="padding-top: 10px;padding-bottom: 10px;">RM4</label>
-                                </div>
-                                <div class="border rounded-0 shadow-sm d-flex mb-3" style="padding: 20px;">
-                                    <div class="form-check flex-grow-1">
-                                        <input class="form-check-input" type="checkbox" id="formCheck-size" name="chkbox[]" style="padding: 20px;border-radius: 25px;" value="Size" required>
-                                        <label class="form-check-label d-flex" for="formCheck-size" style="padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;">Size</label>
-                                    </div>
-                                    <label class="form-label fs-5 fw-bold text-end d-xxl-flex" style="padding-top: 10px;padding-bottom: 10px;">RM4</label>
-                                </div>
-                                <div class="border rounded-0 shadow-sm d-flex mb-3" style="padding: 20px;">
-                                    <div class="form-check flex-grow-1">
-                                        <input class="form-check-input" type="checkbox" id="formCheck-seller" name="chkbox[]" style="padding: 20px;border-radius: 25px;" value="Seller Top 20" required>
-                                        <label class="form-check-label d-flex" for="formCheck-seller" style="padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;">Seller Top 20</label>
-                                    </div>
-                                    <label class="form-label fs-5 fw-bold text-end d-xxl-flex" style="padding-top: 10px;padding-bottom: 10px;">RM4</label>
-                                </div>
-                                <div class="border rounded-0 shadow-sm d-flex mb-3" style="padding: 20px;">
-                                    <div class="form-check flex-grow-1"> 
-                                        <input class="form-check-input" type="checkbox" id="formCheck-comment" name="chkbox[]" style="border-radius: 25px;padding: 20px;" value="Comment ( Seller Top 20, Quality Product, Customer Service )" required>
-                                        <label class="form-check-label d-flex" for="formCheck-comment" style="padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;">Comment ( Seller Top 20, Quality Product, Customer Service )</label>
-                                        <div class="invalid-feedback">
-                                            Please choose at least one.
-                                        </div>
-                                    </div>
-                                    <label class="form-label fs-5 fw-bold text-end d-xxl-flex" style="padding-top: 10px;padding-bottom: 10px;">RM30</label>
-                                </div>
->>>>>>> main
                             </div>
                         </div><br>
                         <div class="card shadow-sm">
