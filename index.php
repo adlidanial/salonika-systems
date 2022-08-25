@@ -1,5 +1,4 @@
 <?php
-<<<<<<< HEAD
     require_once "bigData.php";
     require_once './includes/toyyibpay.php';
     
@@ -11,12 +10,6 @@
     }
     
     if(isset($_POST['name']) && isset($_POST['email']) && isset($_POST['phonenumber']) && isset($_POST['chkbox']) && isset($_POST['submit']))
-=======
-    // require_once "bigData.php";
-    require_once './includes/toyyibpay.php';
-    session_start();
-    if(isset($_POST['name']) && isset($_POST['email']) && isset($_POST['phonenumber']) && isset($_POST['chkbox']))
->>>>>>> main
     {
         if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
             $link = "https";
@@ -33,10 +26,8 @@
         $_SESSION['phonenumber'] = $_POST['phonenumber'];
         $_SESSION['price'] = $_POST['price'];
         $_SESSION['chkbox'] = $_POST['chkbox'];
-<<<<<<< HEAD
         $_SESSION['isRefresh'] = true;
-=======
->>>>>>> main
+
 
         $data_string = array(
             'userSecretKey'=> SECRET_KEY,
@@ -79,11 +70,8 @@
         </script>";
     }
     
-<<<<<<< HEAD
     $obj = new bigData('', '', '', '', '');
     $listcategory = $obj->getListPriceByCategory();
-=======
->>>>>>> main
 ?>
 
 <!DOCTYPE html>
@@ -244,7 +232,6 @@
                                     <span>Choose any 3 category (<strong>except</strong> comment category)<strong> RM10</strong></span>
                                     <br><span>Comment category<strong> RM30</strong></span>
                                 </div>
-<<<<<<< HEAD
                                 <?php 
                                 for($i=0; $i<count($listcategory); $i++)
                                 {
@@ -258,7 +245,6 @@
                                     echo "</div>";
                                 } 
                                 ?>
-=======
                                 <div class="border rounded-0 shadow-sm d-flex mb-3" style="padding: 20px;">
                                     <div class="form-check flex-grow-1">
                                         <input class="form-check-input" type="checkbox" id="formCheck-type" name="chkbox[]" style="padding: 20px;border-radius: 25px;" value="Type" required>

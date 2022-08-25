@@ -244,11 +244,7 @@
                 //Content
                 $mail->isHTML(true);                                  //Set email format to HTML
                 $mail->Subject = 'SALONIKA SYSTEMS';
-<<<<<<< HEAD
                 $mail->Body    = nl2br($message);
-=======
-                $mail->Body    = $message;
->>>>>>> main
                 // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
                 $mail->send();
@@ -260,7 +256,6 @@
                 return false;
             }
         }
-<<<<<<< HEAD
 
         public function getParameter()
         {
@@ -465,7 +460,5 @@
                 echo "<script>alert('Error here:".$e."');</script>";
             }
         }
-=======
->>>>>>> main
     }
 ?>

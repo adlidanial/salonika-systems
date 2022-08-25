@@ -2,7 +2,6 @@
 
     require_once "bigData.php";
 
-<<<<<<< HEAD
     if(isset($_SESSION["name"]) && isset($_SESSION["email"]) && isset($_SESSION["phonenumber"]) && isset($_SESSION["price"]) && 
     isset($_SESSION["chkbox"]) && isset($_GET['transaction_id']) && isset($_GET['status_id']))
     {
@@ -44,45 +43,12 @@
                 window.alert('Your data cannot be save.');
                 </script>";
             }
-=======
-    $customer = new bigData($_SESSION['name'], $_SESSION['email'], $_SESSION['phonenumber'], $_SESSION['price'], $_SESSION['chkbox']);
-    list($isChecked, $lastid) = $customer->saveCustomer();
-    if($isChecked)
-    {
-        if($customer->saveOrder($lastid, $_SESSION['referenceno'], $_GET['transaction_id'], $_GET['status_id']))
-        {
-
-            list($name, $email, $phonenumber) = $customer->getCustomerById($lastid);
-            list($listorder, $referenceno, $transid, $statusid, $price) = $customer->getOrderByCustomerId($lastid);
-
-            echo "
-            <script>
-            window.alert('You have successful pay. We will update the order from your email.');
-            </script>";
-        }
-        else
-        {
-            echo "
-            <script>
-            window.alert('Your order cannot be save.');
-            </script>";
->>>>>>> main
-        }
+        }  
     }
     else
     {
-<<<<<<< HEAD
         header("Location: ./");
     }
-=======
-        echo "
-        <script>
-        window.alert('Your data cannot be save.');
-        </script>";
-    }
-
-
->>>>>>> main
 ?>
 
 <!DOCTYPE html>
