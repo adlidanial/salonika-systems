@@ -171,44 +171,6 @@
             </div>
         </div><br>
         <div class="container">
-            <div class="row">
-                <div class="col">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <p class="fs-4 text-center"><strong>Starter</strong></p>
-                            <p class="text-center text-secondary"><strong>A simple start for everyone</strong></p>
-                            <div class="d-flex mb-3" style="padding: 20px;">
-                                <ul class="text-start flex-fill" style="color: rgb(84,186,185);font-weight: bold;">
-                                    <li>Item 1</li>
-                                    <li>Item 2</li>
-                                    <li>Item 3</li>
-                                    <li>Item 4</li>
-                                </ul>
-                            </div>
-                            <div class="d-grid"><a href="#order-form" class="btn btn-dark border rounded-pill" type="button">Select Plan</a></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card" style="border: 5px solid rgb(84,186,185) ;">
-                        <div class="card-body"><span class="badge rounded-pill bg-primary" style="background: rgb(84,186,185) !important;">RECOMMENDED</span>
-                            <p class="fs-4 text-center"><strong>Professional</strong></p>
-                            <p class="text-center text-secondary"><strong>Solution for big organization</strong></p>
-                            <div class="d-flex mb-3" style="padding: 20px;">
-                                <ul class="text-start flex-fill" style="color: rgb(84,186,185);font-weight: bold;">
-                                    <li>Item 1</li>
-                                    <li>Item 2</li>
-                                    <li>Item 3</li>
-                                    <li>Item 4</li>
-                                </ul>
-                            </div>
-                            <div class="d-grid"><a href="#order-form" class="btn btn-dark border rounded-pill" type="button">Select Plan</a></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div><br>
-        <div class="container">
             <div class="card">
                 <div class="card-body shadow-sm">
                     <h1 class="card-title">How to <span style="color: rgb(84, 186, 185);">checkout</span></h1>
@@ -244,57 +206,32 @@
                 </div>
             </div>
         </div><br>
-        <div class="container" style="text-align: left;" id="order-form">
+        <div class="container" id="order-form" style="text-align: left;">
             <div class="row">
                 <div class="col-lg-8 col-xl-8 col-xxl-8 offset-lg-2 offset-xl-2 offset-xxl-2">
                     <form style="padding: 10px;" class="needs-validation" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" novalidate>
                         <div class="card shadow-sm">
                             <div class="card-body">
-                                <p class="fs-4 text-center"><strong>Plan</strong></p>
-                                <div class="border rounded-0 shadow-sm mb-3" style="padding: 20px;">
-                                    <div class="d-flex">
-                                        <div class="form-check text-start flex-fill">
-                                            <input class="form-check-input" type="radio" name="package" id="formCheck-pro" style="padding: 20px;border-radius: 25px;">
-                                            <label class="form-check-label d-grid fw-bold" for="formCheck-pro" style="padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;">Professional<br>
-                                                <span class="text-secondary fw-normal">Solution for big organization</span>
-                                            </label>
-                                        </div>
-                                        <label class="form-label fs-6 fw-bold" style="padding-top: 10px;padding-bottom: 10px;">RM380/month</label>
-                                    </div>
+                                <p class="fs-4 text-center">
+                                    <strong>Category</strong>
+                                </p>
+                                <div class="alert alert-secondary" role="alert">
+                                    <span>Choose any 3 category (<strong>except</strong> comment category)<strong> RM10</strong></span>
+                                    <br><span>Comment category<strong> RM30</strong></span>
                                 </div>
-                                <div class="border rounded-0 shadow-sm d-flex mb-3" style="padding: 20px;">
-                                    <div class="form-check text-start flex-fill">
-                                        <input class="form-check-input" type="radio" name="package" id="formCheck-starter" style="padding: 20px;border-radius: 25px;">
-                                        <label class="form-check-label d-grid fw-bold" for="formCheck-starter" style="padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;">Starter<br>
-                                            <span class="text-secondary fw-normal">A simple start for everyone</span>
-                                        </label>
-                                    </div>
-                                    <label class="form-label fs-5 fw-bold text-end" style="padding-top: 10px;padding-bottom: 10px;"></label>
-                                </div>
-                                <div class="card shadow-sm d-none" id="plan-starter">
-                                    <div class="card-body">
-                                        <p class="fs-4 text-center">
-                                            <strong>Category</strong>
-                                        </p>
-                                        <div class="alert alert-secondary" role="alert">
-                                            <span>Choose any 3 category (<strong>except</strong> comment category)<strong> RM10</strong></span>
-                                            <br><span>Comment category<strong> RM30</strong></span>
-                                        </div>
-                                        <?php 
-                                        for($i=0; $i<count($listcategory); $i++)
-                                        {
-                                            echo "<div class=\"border rounded-0 shadow-sm d-flex mb-3\" style=\"padding: 20px;\">";
-                                            echo "<div class=\"form-check flex-grow-1\">
-                                                <input type=\"hidden\" id='discount-".$i."' value=".$listcategory[$i]['DISCOUNT']." readonly>
-                                                <input class=\"form-check-input checkCategory\" data-idx=".$i."  type=\"checkbox\" id='formCheck-".$i."' name=\"chkbox[]\" style=\"padding: 20px;border-radius: 25px;\" value='".$listcategory[$i]['PARAMETER_NAME']."' required>
-                                                <label class=\"form-check-label d-flex\" for='formCheck-".$i."' style=\"padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;\">".$listcategory[$i]['PARAMETER_NAME']."</label>
-                                            </div>";
-                                            echo "<label class=\"form-label fs-6 fw-bold text-end d-xxl-flex\" style=\"padding-top: 10px;padding-bottom: 10px;\" id='price-".$i."'>RM".$listcategory[$i]['PRICE']."</label>";
-                                            echo "</div>";
-                                        } 
-                                        ?>
-                                    </div>
-                                </div>
+                                <?php 
+                                for($i=0; $i<count($listcategory); $i++)
+                                {
+                                    echo "<div class=\"border rounded-0 shadow-sm d-flex mb-3\" style=\"padding: 20px;\">";
+                                    echo "<div class=\"form-check flex-grow-1\">
+                                        <input type=\"hidden\" id='discount-".$i."' value=".$listcategory[$i]['DISCOUNT']." readonly>
+                                        <input class=\"form-check-input checkCategory\" data-idx=".$i."  type=\"checkbox\" id='formCheck-".$i."' name=\"chkbox[]\" style=\"padding: 20px;border-radius: 25px;\" value='".$listcategory[$i]['PARAMETER_NAME']."' required>
+                                        <label class=\"form-check-label d-flex\" for='formCheck-".$i."' style=\"padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;\">".$listcategory[$i]['PARAMETER_NAME']."</label>
+                                    </div>";
+                                    echo "<label class=\"form-label fs-5 fw-bold text-end d-xxl-flex\" style=\"padding-top: 10px;padding-bottom: 10px;\" id='price-".$i."'>RM".$listcategory[$i]['PRICE']."</label>";
+                                    echo "</div>";
+                                } 
+                                ?>
                             </div>
                         </div><br>
                         <div class="card shadow-sm">

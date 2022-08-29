@@ -36,6 +36,14 @@ $( document ).ready(function() {
         
         })
     })
+
+    $("#formCheck-starter").click(function() {
+        $("#plan-starter").removeClass("d-none");
+    });
+
+    $("#formCheck-pro").click(function() {
+        $("#plan-starter").addClass("d-none");
+    });
 });
 
 
