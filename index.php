@@ -9,7 +9,7 @@
         header('Clear-Site-Data: "cache", "cookies", "storage", "executionContexts"');
     }
     
-    if(isset($_POST['name']) && isset($_POST['email']) && isset($_POST['phonenumber']) && isset($_POST['chkbox']) && isset($_POST['submit']))
+    if(isset($_POST['submit']))
     {
         if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
             $link = "https";
@@ -20,12 +20,25 @@
         $link .= $_SERVER['HTTP_HOST'];   
         $link .= chop(dirname($_SERVER['REQUEST_URI']), '\\');
 
+        for($i = 0; $i<count($_POST['package']); $i++)
+        {
+            if($_POST["package"][$i] == "Professional")
+            {
+                $_SESSION['chkbox'] = $_POST["package"][$i];
+                break;
+            }
+            else
+                $_SESSION['chkbox'] = $_POST['chkbox'];
+
+        }
+    
+
         $_SESSION['referenceno'] = 'SS'.date('dmyHms');
         $_SESSION['name'] = $_POST['name'];
         $_SESSION['email'] = $_POST['email'];
         $_SESSION['phonenumber'] = $_POST['phonenumber'];
         $_SESSION['price'] = $_POST['price'];
-        $_SESSION['chkbox'] = $_POST['chkbox'];
+        // $_SESSION['chkbox'] = ($_POST['package'] == "pro" ? $_POST['package'] : $_POST['chkbox']);
         $_SESSION['isRefresh'] = true;
 
 
@@ -141,16 +154,16 @@
             </div>
         </div>
         <div class="container">
-            <div class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000" id="carousel-1" style="max-height: 400px;">
-                <div class="carousel-inner" style="max-height: 400px;">
+            <div class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000" id="carousel-1" style="max-height: 400px">
+                <div class="carousel-inner" style="max-height: 400px">
                     <div class="carousel-item active">
-                        <img class="w-100 d-block" src="assets/img/bg-slide-1.jpg" alt="Slide Image">
+                        <img class="w-100 d-block img-fluid" src="assets/img/bg-slide-1.jpg" alt="Slide Image">
                     </div>
                     <div class="carousel-item">
-                        <img class="w-100 d-block" src="assets/img/bg-slide-2.jpg" alt="Slide Image">
+                        <img class="w-100 d-block img-fluid" src="assets/img/bg-slide-2.jpg" alt="Slide Image">
                     </div>
                     <div class="carousel-item">
-                        <img class="w-100 d-block" src="assets/img/bg-slide-3.jpg" alt="Slide Image">
+                        <img class="w-100 d-block img-fluid" src="assets/img/bg-slide-3.jpg" alt="Slide Image">
                     </div>
                 </div>
                 <div>
@@ -173,36 +186,39 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <div class="card shadow-sm">
+                    <div class="card shadow-sm h-100">
                         <div class="card-body">
                             <p class="fs-4 text-center"><strong>Starter</strong></p>
                             <p class="text-center text-secondary"><strong>A simple start for everyone</strong></p>
                             <div class="d-flex mb-3" style="padding: 20px;">
-                                <ul class="text-start flex-fill" style="color: rgb(84,186,185);font-weight: bold;">
-                                    <li>Item 1</li>
-                                    <li>Item 2</li>
-                                    <li>Item 3</li>
-                                    <li>Item 4</li>
+                                <ul class="text-start flex-fill">
+                                    <li><span style="color: rgb(84,186,185);font-weight: bold;">Single trend</span> choose only</li>
+                                    <li><span style="color: rgb(84,186,185);font-weight: bold;">3-business day</span> target response time (Email & WhatsApp)</li>
+                                    <li><span style="color: rgb(84,186,185);font-weight: bold;">Provide</span> e-mail support and live chat</li>
                                 </ul>
                             </div>
-                            <div class="d-grid"><a href="#order-form" class="btn btn-dark border rounded-pill" type="button">Select Plan</a></div>
+                            <div class="d-grid position-absolute fixed-bottom p-2">
+                                <a href="#order-form" class="btn btn-dark border rounded-pill" type="button">Select Plan</a>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="col">
-                    <div class="card" style="border: 5px solid rgb(84,186,185) ;">
+                    <div class="card shadow-sm h-100" style="border: 5px solid rgb(84,186,185) ;">
                         <div class="card-body"><span class="badge rounded-pill bg-primary" style="background: rgb(84,186,185) !important;">RECOMMENDED</span>
                             <p class="fs-4 text-center"><strong>Professional</strong></p>
                             <p class="text-center text-secondary"><strong>Solution for big organization</strong></p>
                             <div class="d-flex mb-3" style="padding: 20px;">
-                                <ul class="text-start flex-fill" style="color: rgb(84,186,185);font-weight: bold;">
-                                    <li>Item 1</li>
-                                    <li>Item 2</li>
-                                    <li>Item 3</li>
-                                    <li>Item 4</li>
+                                <ul class="text-start flex-fill">
+                                    <li><span style="color: rgb(84,186,185);font-weight: bold;">All trends</span> included</li>
+                                    <li><span style="color: rgb(84,186,185);font-weight: bold;">3-business day</span> target response time (Email & WhatsApp)</li>
+                                    <li><span style="color: rgb(84,186,185);font-weight: bold;">Response</span> in business day or week</li>
+                                    <li><span style="color: rgb(84,186,185);font-weight: bold;">Provide</span> e-mail support and live chat</li>   
                                 </ul>
                             </div>
-                            <div class="d-grid"><a href="#order-form" class="btn btn-dark border rounded-pill" type="button">Select Plan</a></div>
+                            <div class="d-grid position-absolute fixed-bottom p-2">
+                                <a href="#order-form" class="btn btn-dark border rounded-pill" type="button">Select Plan</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -252,24 +268,34 @@
                             <div class="card-body">
                                 <p class="fs-4 text-center"><strong>Plan</strong></p>
                                 <div class="border rounded-0 shadow-sm mb-3" style="padding: 20px;">
-                                    <div class="d-flex">
-                                        <div class="form-check text-start flex-fill">
-                                            <input class="form-check-input" type="radio" name="package" id="formCheck-pro" style="padding: 20px;border-radius: 25px;">
-                                            <label class="form-check-label d-grid fw-bold" for="formCheck-pro" style="padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;">Professional<br>
-                                                <span class="text-secondary fw-normal">Solution for big organization</span>
-                                            </label>
+                                    <div class="row">
+                                        <div class="col-12 col-sm-7 col-md-9 col-lg-8 col-xl-9 col-xxl-10">
+                                            <div class="form-check text-start flex-fill">
+                                                <input class="form-check-input" type="radio" name="package[]" id="formCheck-pro" style="padding: 20px;border-radius: 25px;" value="Professional" required>
+                                                <label class="form-check-label d-grid fw-bold" for="formCheck-pro" style="padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;">Professional<br>
+                                                    <span class="text-secondary fw-normal">Solution for big organization</span>
+                                                </label>
+                                            </div>
                                         </div>
-                                        <label class="form-label fs-6 fw-bold" style="padding-top: 10px;padding-bottom: 10px;">RM380/month</label>
+                                        <div class="col-12 col-sm-5 col-md-3 col-lg-4 col-xl-3 col-xxl-2 text-center">
+                                            <label class="form-label fs-6 fw-bold" id="price-pro" style="padding-top: 10px;padding-bottom: 10px;">RM<span>380</span>/month</label>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="border rounded-0 shadow-sm d-flex mb-3" style="padding: 20px;">
-                                    <div class="form-check text-start flex-fill">
-                                        <input class="form-check-input" type="radio" name="package" id="formCheck-starter" style="padding: 20px;border-radius: 25px;">
-                                        <label class="form-check-label d-grid fw-bold" for="formCheck-starter" style="padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;">Starter<br>
-                                            <span class="text-secondary fw-normal">A simple start for everyone</span>
-                                        </label>
+                                <div class="border rounded-0 shadow-sm mb-3" style="padding: 20px;">
+                                    <div class="row">
+                                        <div class="col-12 col-sm-7 col-md-9 col-lg-8 col-xl-9 col-xxl-10">
+                                            <div class="form-check text-start flex-fill">
+                                                <input class="form-check-input" type="radio" name="package[]" id="formCheck-starter" style="padding: 20px;border-radius: 25px;" value="starter" required>
+                                                <label class="form-check-label d-grid fw-bold" for="formCheck-starter" style="padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;">Starter<br>
+                                                    <span class="text-secondary fw-normal">A simple start for everyone</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-5 col-md-3 col-lg-4 col-xl-3 col-xxl-2">
+                                            <label class="form-label fs-5 fw-bold" style="padding-top: 10px;padding-bottom: 10px;"></label>
+                                        </div>
                                     </div>
-                                    <label class="form-label fs-5 fw-bold text-end" style="padding-top: 10px;padding-bottom: 10px;"></label>
                                 </div>
                                 <div class="card shadow-sm d-none" id="plan-starter">
                                     <div class="card-body">
@@ -277,20 +303,36 @@
                                             <strong>Category</strong>
                                         </p>
                                         <div class="alert alert-secondary" role="alert">
-                                            <span>Choose any 3 category (<strong>except</strong> comment category)<strong> RM10</strong></span>
+                                            <span><strong>Minimum</strong> choose any 3 category (<strong>except</strong> comment category)<strong> RM10</strong></span>
                                             <br><span>Comment category<strong> RM30</strong></span>
                                         </div>
                                         <?php 
                                         for($i=0; $i<count($listcategory); $i++)
                                         {
-                                            echo "<div class=\"border rounded-0 shadow-sm d-flex mb-3\" style=\"padding: 20px;\">";
-                                            echo "<div class=\"form-check flex-grow-1\">
-                                                <input type=\"hidden\" id='discount-".$i."' value=".$listcategory[$i]['DISCOUNT']." readonly>
-                                                <input class=\"form-check-input checkCategory\" data-idx=".$i."  type=\"checkbox\" id='formCheck-".$i."' name=\"chkbox[]\" style=\"padding: 20px;border-radius: 25px;\" value='".$listcategory[$i]['PARAMETER_NAME']."' required>
-                                                <label class=\"form-check-label d-flex\" for='formCheck-".$i."' style=\"padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;\">".$listcategory[$i]['PARAMETER_NAME']."</label>
+                                            echo "
+                                            <div class=\"border rounded-0 shadow-sm mb-3\" style=\"padding: 20px;\">
+                                                <div class=\"row\">
+                                                    <div class=\"col-8 col-sm-7 col-md-9 col-lg-8 col-xl-9 col-xxl-10\">
+                                                        <div class=\"form-check flex-grow-1\">
+                                                        <input type=\"hidden\" id='discount-".$i."' value=".$listcategory[$i]['DISCOUNT']." readonly>
+                                                        <input class=\"form-check-input checkCategory\" data-idx=".$i."  type=\"checkbox\" id='formCheck-".$i."' name=\"chkbox[]\" style=\"padding: 20px;border-radius: 25px;\" value='".$listcategory[$i]['PARAMETER_NAME']."' required>
+                                                        <label class=\"form-check-label d-flex\" for='formCheck-".$i."' style=\"padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;\">".$listcategory[$i]['PARAMETER_NAME']."
+                                                        <i class=\"fa fa-info-circle\" aria-hidden=\"true\" data-toggle=\"tooltip\" 
+                                                        data-placement=\"top\" title='".$listcategory[$i]['TOOLTIP']."'></i></label>
+                                                        
+                                                        </div>
+                                                    </div>
+                                                    <div class=\"col-4 col-sm-5 col-md-3 col-lg-4 col-xl-3 col-xxl-2 text-center\">";
+                                                        if($listcategory[$i]['DISCOUNT_PRICE'] != 0)
+                                                            echo "<label class=\"form-label fw-bold position-absolute top-10\" style=\"font-size:10px;\"><del class=\"text-danger\">RM".$listcategory[$i]['PRICE']."</del></label>";
+                                                        else
+                                                            echo "<label class=\"form-label fs-6 fw-bold\" style=\"padding-top: 10px;padding-bottom: 10px;\" id='price-".$i."'>RM".$listcategory[$i]['PRICE']."</label>";
+                                                        if($listcategory[$i]['DISCOUNT_PRICE'] != 0)
+                                                            echo "<label class=\"form-label fs-6 fw-bold\" style=\"padding-top: 10px;padding-bottom: 10px;\" id='price-".$i."'>RM".$listcategory[$i]['DISCOUNT_PRICE']."</label>";
+                                                    echo "
+                                                    </div>
+                                                </div>
                                             </div>";
-                                            echo "<label class=\"form-label fs-6 fw-bold text-end d-xxl-flex\" style=\"padding-top: 10px;padding-bottom: 10px;\" id='price-".$i."'>RM".$listcategory[$i]['PRICE']."</label>";
-                                            echo "</div>";
                                         } 
                                         ?>
                                     </div>
@@ -305,6 +347,7 @@
                                     <hr>
                                     <div class="table-responsive">
                                         <table class="table table-borderless">
+                                            <strong><span id="name-package"></span></strong>    
                                             <tbody id="list-category">
                                             </tbody>
                                             <tfoot>
@@ -374,6 +417,11 @@
     <?php include "./includes/footer.html" ?>
     <script type="text/javascript" src="./assets/js/add-cart.js"></script>
     <script type="text/javascript" src="./assets/js/form-validate.js"></script>
+    <script type="text/javascript">
+        $('[data-toggle="tooltip"]').tooltip({
+            placement : 'top'
+        });
+    </script>
 </body>
 
 </html>

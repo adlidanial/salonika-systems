@@ -9,7 +9,7 @@
         $listparameter = $admin->getParameter();
         if(isset($_POST['save']))
         {
-            if($admin->saveParameter($_POST['groupname'], $_POST['parametername'], $_POST['status']))
+            if($admin->saveParameter($_POST['groupname'], $_POST['parametername'], $_POST['tooltip'], $_POST['status']))
             {
                 echo "
                     <script>
@@ -27,7 +27,7 @@
         }
         else if(isset($_POST["updated"]))
         {
-            if($admin->updateParameter($_POST['groupname'], $_POST['parametername'], $_POST['status'], $_POST['parameterid']))
+            if($admin->updateParameter($_POST['groupname'], $_POST['parametername'], $_POST['tooltip'], $_POST['status'], $_POST['parameterid']))
             {
                 echo "
                     <script>
@@ -87,11 +87,10 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="-32 0 512 512" width="1em" height="1em" fill="currentColor" class="fs-4">
-                                <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
                                 <path d="M256 32V51.2C329 66.03 384 130.6 384 208V226.8C384 273.9 401.3 319.2 432.5 354.4L439.9 362.7C448.3 372.2 450.4 385.6 445.2 397.1C440 408.6 428.6 416 416 416H32C19.4 416 7.971 408.6 2.809 397.1C-2.353 385.6-.2883 372.2 8.084 362.7L15.5 354.4C46.74 319.2 64 273.9 64 226.8V208C64 130.6 118.1 66.03 192 51.2V32C192 14.33 206.3 0 224 0C241.7 0 256 14.33 256 32H256zM224 512C207 512 190.7 505.3 178.7 493.3C166.7 481.3 160 464.1 160 448H288C288 464.1 281.3 481.3 269.3 493.3C257.3 505.3 240.1 512 224 512z"></path>
                             </svg>
                             <span class="badge rounded-pill bg-danger"><?php echo count($result); ?></span></a>
-                        <div class="dropdown-menu dropdown-menu-end">
+                        <div class="dropdown-menu dropdown-menu-end" style="max-height: 280px;overflow-y: auto;">
                             <h6 class="dropdown-header">Notification</h6>
                             <?php for($i=0; $i<count($result); $i++){ ?>
                             <a class="dropdown-item" href="./queue.php?id=<?php echo $result[$i]['PK_ID']; ?>">
@@ -121,18 +120,6 @@
             <div class="row">
                 <div class="col-xl-8 col-xxl-10 offset-xl-2 offset-xxl-1">
                     <h4 class="text-center card-title">Parameter</h4>
-                    <!-- <form>
-                        <div class="row">
-                            <div class="col">
-                                <div><label class="form-label">Group Name</label><input class="form-control" type="text"></div>
-                            </div>
-                            <div class="col">
-                                <div><label class="form-label">Parameter Name</label><input class="form-control" type="text"></div>
-                            </div>
-                        </div><br>
-                        <div class="d-grid"><button class="btn btn-success link-light" type="button"><i class="fa fa-search"></i>&nbsp;Search</button></div>
-                        <hr>
-                    </form> -->
                     <div class="bootstrap_datatables">
                         <div class="container py-5">
                             <div class="row py-5">
@@ -152,6 +139,7 @@
                                                         <th>No</th>
                                                         <th>Group Name</th>
                                                         <th>Parameter Name</th>
+                                                        <th>Tooltip</th>
                                                         <th>Date/Time</th>
                                                         <th>Status</th>
                                                         <th>Action</th>
@@ -166,6 +154,7 @@
                                                                 echo "<td>".$count++."</td>";
                                                                 echo "<td>".$listparameter[$i]['GROUP_NAME']."</td>";
                                                                 echo "<td>".$listparameter[$i]['PARAMETER_NAME']."</td>";
+                                                                echo "<td>".($listparameter[$i]['TOOLTIP'] != "" ? $listparameter[$i]['TOOLTIP'] : "-")."</td>";
                                                                 echo "<td>".date_format($date, "d F Y h:i A")."</td>";
                                                                 echo "<td>".($listparameter[$i]['STATUS'] == 'Y' ? "Active" : "Not Active")."</td>";
                                                                 echo "<td>
@@ -197,6 +186,10 @@
                                                                 <div>
                                                                     <label class="form-label" for="labelParameterName">Parameter Name</label>
                                                                     <input class="form-control" type="text" name="parametername" id="labelParameterName" required>
+                                                                </div>
+                                                                <div>
+                                                                    <label class="form-label" for="labelTooltip">Tooltip (max length 200)</label>
+                                                                    <input class="form-control" type="text" name="tooltip" id="labelTooltip" required>
                                                                 </div>
                                                                 <div>
                                                                     <label class="form-label" for="validationName">Status</label>
@@ -234,6 +227,10 @@
                                                                 <div>
                                                                     <label class="form-label" for="labelParameterName">Parameter Name</label>
                                                                     <input class="form-control" type="text" name="parametername" id="parametername" required>
+                                                                </div>
+                                                                <div>
+                                                                    <label class="form-label" for="labelTooltip">Tooltip (max length 200)</label>
+                                                                    <input class="form-control" type="text" name="tooltip" id="tooltip" required>
                                                                 </div>
                                                                 <div>
                                                                     <label class="form-label" for="validationName">Status</label>
@@ -282,9 +279,10 @@
 
             $('#groupname').val(data[1]);
             $('#parametername').val(data[2]);
-            $('#status').val(data[4]);
+            $('#tooltip').val(data[3]);
+            $('#status').val(data[5]);
             $('select.editparameter option').filter(function() {
-                return $(this).text() == data[4];
+                return $(this).text() == data[5];
             }).prop('selected', true)
 
         });

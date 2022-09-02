@@ -273,17 +273,17 @@
             }
         }
 
-        public function saveParameter($groupname, $parametername, $status)
+        public function saveParameter($groupname, $parametername, $tooltip, $status)
         {
             try
             {
                 $sql = "
-                    INSERT INTO PARAMETER(GROUP_NAME, PARAMETER_NAME, DATE_CREATED, STATUS)
-                    VALUES (?, ?, NOW(), ?)
+                    INSERT INTO PARAMETER(GROUP_NAME, PARAMETER_NAME, TOOLTIP, DATE_CREATED, STATUS)
+                    VALUES (?, ?, ?, NOW(), ?)
                 ";
 
                 $stmt = $this->connect()->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-                $isChecked = $stmt->execute([$groupname, $parametername, $status]);
+                $isChecked = $stmt->execute([$groupname, $parametername, $tooltip, $status]);
                 if($isChecked)
                     return true;
                 else
@@ -295,18 +295,19 @@
             }
         }
 
-        public function updateParameter($groupname, $parametername, $status, $id)
+        public function updateParameter($groupname, $parametername, $tooltip, $status, $id)
         {
             try
             {
                 $sql = "
-                    UPDATE PARAMETER SET GROUP_NAME = :groupname, PARAMETER_NAME = :parametername, DATE_CREATED = NOW(), STATUS = :status
+                    UPDATE PARAMETER SET GROUP_NAME = :groupname, PARAMETER_NAME = :parametername, TOOLTIP = :tooltip, DATE_CREATED = NOW(), STATUS = :status
                     WHERE PK_ID = :id
                 ";
 
                 $stmt = $this->connect()->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
                 $stmt->bindParam(":groupname", $groupname);
                 $stmt->bindParam(":parametername", $parametername);
+                $stmt->bindParam(":tooltip", $tooltip);
                 $stmt->bindParam(":status", $status);
                 $stmt->bindParam(":id", $id);
                 $isChecked = $stmt->execute();

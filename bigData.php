@@ -54,7 +54,11 @@
                     VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
                 ";
 
-                $list = implode(", ", $this->listcategory);
+                
+                if(is_array($this->listcategory))
+                    $list = implode(", ", $this->listcategory);
+                else
+                    $list = $this->listcategory;
                 $stmt = $this->connect()->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
                 $result = $stmt->execute([$lastid, $list, $referenceno, $transid, $statusid, $this->totalprice, 0]);
                 if($result)
