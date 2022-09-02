@@ -2,10 +2,14 @@
 
     class dbConnect
     {
-        private $servername = "localhost";
-        private $user = "root";
-        private $pass = "admin";
-        private $db = "salonika_systems";
+        // private $servername = "localhost";
+        // private $user = "root";
+        // private $pass = "admin";
+        // private $db = "salonika_systems";
+        private $servername = "us-cdbr-east-06.cleardb.net";
+        private $user = "bfb756cf11b78b";
+        private $pass = "26cbe5b8";
+        private $db = "heroku_e66b5adb073a0d1";
         private $connect;
 
         public function connect()
