@@ -94,8 +94,12 @@
                         <div class="dropdown-menu dropdown-menu-end" style="max-height: 280px;overflow-y: auto;">
                             <h6 class="dropdown-header">Notification</h6>
                             <?php for($i=0; $i<count($result); $i++){ ?>
-                            <a class="dropdown-item" href="./queue.php?id=<?php echo $result[$i]['PK_ID']; ?>">
-                                <strong>Pending Order</strong><br>
+                            <a class="dropdown-item" href="./queue.php">
+                                <?php if($result[$i]['LIST_ORDER'] != "-"){echo "<strong>Pending Order</strong>";}
+                                else
+                                    echo "<strong>Request Order</strong>";
+                                ?>
+                                <br>
                                 <span>Payment for the order <strong><?php echo $result[$i]['REFERENCE_NO']; ?></strong>
                                 has been confirm.</span> </a>
                             <?php } ?>

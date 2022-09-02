@@ -58,8 +58,12 @@
                         <div class="dropdown-menu dropdown-menu-end" style="max-height: 280px;overflow-y: auto;">
                             <h6 class="dropdown-header">Notification</h6>
                             <?php for($i=0; $i<count($result); $i++){ ?>
-                            <a class="dropdown-item" href="./queue.php?id=<?php echo $result[$i]['PK_ID']; ?>">
-                                <strong>Pending Order</strong><br>
+                            <a class="dropdown-item" href="./queue.php">
+                                <?php if($result[$i]['LIST_ORDER'] != "-"){echo "<strong>Pending Order</strong>";}
+                                else
+                                    echo "<strong>Request Order</strong>";
+                                ?>
+                                <br>
                                 <span>Payment for the order <strong><?php echo $result[$i]['REFERENCE_NO']; ?></strong>
                                 has been confirm.</span> </a>
                             <?php } ?>
@@ -68,7 +72,6 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="-32 0 512 512" width="1em" height="1em" fill="currentColor" class="fs-4">
-                                <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
                                 <path d="M224 256c70.7 0 128-57.31 128-128s-57.3-128-128-128C153.3 0 96 57.31 96 128S153.3 256 224 256zM274.7 304H173.3C77.61 304 0 381.6 0 477.3c0 19.14 15.52 34.67 34.66 34.67h378.7C432.5 512 448 496.5 448 477.3C448 381.6 370.4 304 274.7 304z"></path>
                             </svg>
                         </a>
@@ -83,7 +86,7 @@
     <section style="padding-top: 10px;padding-bottom: 10px;">
         <div class="container" style="padding-top: 50px;padding-bottom: 50px;">
             <div class="row">
-                <div class="col-xl-8 col-xxl-10 offset-xl-2 offset-xxl-1">
+                <div class="col">
                     <h4 class="text-center card-title">Queue</h4>
                     <div class="bootstrap_datatables">
                         <div class="container py-5">
@@ -99,6 +102,7 @@
                                                         <th>Name</th>
                                                         <th>Order No.</th>
                                                         <th>List Order</th>
+                                                        <th>Request Order</th>
                                                         <th>Date/Time</th>
                                                         <th>Status</th>
                                                         <th>Action</th>
@@ -114,13 +118,22 @@
                                                                 echo "<td>".$listorder[$i]['NAME']."</td>";
                                                                 echo "<td>".$listorder[$i]['REFERENCE_NO']."</td>";
                                                                 echo "<td>".$listorder[$i]['LIST_ORDER']."</td>";
+                                                                echo "<td>".$listorder[$i]['REQUEST']."</td>";
                                                                 echo "<td>".date_format($date, "d F Y h:i A")."</td>";
-                                                                echo "<td>";if($listorder[$i]['STATUS'] == 0) echo "Pending"; elseif($listorder[$i]['STATUS'] == 1) echo "Process"; elseif($listorder[$i]['STATUS'] == 2) echo "Done";"</td>";
-                                                                echo "<td>
-                                                                <button class='btn btn-sm btn-secondary text-white order-Dialog' data-id='".$listorder[$i]['PK_ID']."' data-bs-toggle='modal' data-bs-target='#exampleModal'>
+                                                                echo "<td>";if($listorder[$i]['STATUS'] == 0) echo "Pending"; elseif($listorder[$i]['STATUS'] == 1) echo "Process"; elseif($listorder[$i]['STATUS'] == 2) echo "Done"; elseif($listorder[$i]['STATUS'] == -1) echo "Requesting";"</td>";
+                                                                echo "<td>";
+                                                                if($listorder[$i]['STATUS'] != -1){
+                                                                echo "<button class='btn btn-sm btn-secondary text-white order-Dialog' data-id='".$listorder[$i]['PK_ID']."' data-bs-toggle='modal' data-bs-target='#exampleModal'>
                                                                 <i class='far fa-edit'></i>
-                                                                </button>
-                                                                <a href='./compose.php?userid=".$listorder[$i]['CUST_ID']."' class='btn btn-sm btn-success text-white'><i class='far fa-envelope'></i></a>
+                                                                </button>";
+                                                                }
+                                                                else
+                                                                {
+                                                                    echo "<a class='btn btn-sm btn-secondary text-white' href='./createbill.php?userid=".$listorder[$i]['CUST_ID']."'>
+                                                                    <i class='fa fa-cog'></i>
+                                                                    </a>";
+                                                                }
+                                                                echo "<a href='./compose.php?userid=".$listorder[$i]['CUST_ID']."' class='btn btn-sm btn-success text-white'><i class='far fa-envelope'></i></a>
                                                                 </td>";
                                                                 echo "</tr>";
                                                             }

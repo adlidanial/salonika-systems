@@ -11,14 +11,16 @@
         private $phonenumber;
         private $totalprice;
         private $listcategory = [];
+        private $requestorder;
 
-        public function __construct($name, $email, $phonenumber, $totalprice, $listcategory)
+        public function __construct($name, $email, $phonenumber, $totalprice, $listcategory, $requestorder)
         {
             $this->name = $name;
             $this->email = $email;
             $this->phonenumber = $phonenumber;
             $this->totalprice = $totalprice;
             $this->listcategory = $listcategory;
+            $this->requestorder = $requestorder;
         }
 
         public function saveCustomer()
@@ -141,6 +143,28 @@
 
                 return $result;
 
+            }
+            catch(PDOException $e)
+            {
+                echo "<script>alert('Error here:".$e."');</script>";
+            }
+        }
+
+        public function saveRequestOrder($lastid, $referenceno, $transid, $statusid)
+        {
+            try
+            {
+                $sql = "
+                    INSERT INTO PLACEORDER(FK_ID_CUSTOMER, LIST_ORDER, REQUEST, REFERENCE_NO, TOYYIBPAY_TRANSACTIONID, TOYYIBPAY_STATUSID, PRICE, STATUS, DATE_CREATED, DATE_UPDATED)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
+                ";
+
+                $stmt = $this->connect()->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+                $result = $stmt->execute([$lastid, "-", $this->requestorder, $referenceno, $transid, $statusid, $this->totalprice, -1]);
+                if($result)
+                    return true;
+                else
+                    return false;
             }
             catch(PDOException $e)
             {

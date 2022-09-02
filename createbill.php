@@ -9,23 +9,45 @@
 
         if(isset($_POST['submit']))
         {
+            $userid = $_POST['userid'];
+            $name = $_POST['name'];
             $email = $_POST['email'];
-            $message = $_POST['message'];
-            $file = (isset($_FILES['attachments']) ? $_FILES['attachments'] : "");
-
-            if($admin->setComposeEmail($email, $message, $file))
+            $phonenumber = $_POST['phonenumber'];
+            $referenceno = $_POST['referenceno'];
+            $price = $_POST['price'];
+            $billcode = $admin->setBillCode($name, $email, $phonenumber, $referenceno, $price);
+            if(isset($billcode))
+            {
+                if($admin->saveBill($userid, $billcode))
+                {
+                    echo "
+                    <script>
+                    window.alert('Bill code created and save.');
+                    window.location.href='./queue.php';
+                    </script>";
+                }
+                else
+                {
+                    echo "
+                    <script>
+                    window.alert('Bill code cannot save.');
+                    window.location.href='./queue.php';
+                    </script>";
+                }
+            }
+            else
             {
                 echo "
-                <script>
-                window.alert('Email successful.');
-                window.location.href='./queue.php';
-                </script>";
+                    <script>
+                    window.alert('Bill code cannot created.');
+                    window.location.href='./queue.php';
+                    </script>";
             }
         }
         else if(isset($_GET['userid']))
         {
             $cust = $admin->getCustomerById($_GET['userid']);
-            $status = $admin->getStatusOrderByCustomerId($_GET['userid']);
+            $order = $admin->getRequestOrderAndReferenceNoByCustomerId($_GET['userid']);
             if(count($cust) == 0)
             {
                 echo "
@@ -48,7 +70,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Compose - Salonika Systems</title>
+    <title>Create Bill - Salonika Systems</title>
     <?php include "./includes/header.html" ?>
 </head>
 
@@ -83,7 +105,6 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="-32 0 512 512" width="1em" height="1em" fill="currentColor" class="fs-4">
-                                <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
                                 <path d="M224 256c70.7 0 128-57.31 128-128s-57.3-128-128-128C153.3 0 96 57.31 96 128S153.3 256 224 256zM274.7 304H173.3C77.61 304 0 381.6 0 477.3c0 19.14 15.52 34.67 34.66 34.67h378.7C432.5 512 448 496.5 448 477.3C448 381.6 370.4 304 274.7 304z"></path>
                             </svg>
                         </a>
@@ -101,32 +122,32 @@
                 <div class="col-lg-8 col-xl-8 col-xxl-8 offset-lg-2 offset-xl-2 offset-xxl-2">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="text-center card-title">Compose</h4>
-                            <div class="row">
-                                <div class="col text-end">
-                                    <button class="btn btn-secondary link-light" type="button" id="quick">Quick message</button>
+                            <h4 class="text-center card-title">Create Bill</h4>
+                            <form id="form-message" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" enctype="multipart/form-data">
+                                <input class="form-control d-none" type="text" value="<?php echo $_GET['userid']; ?>" name="userid" readonly>
+                                <div>
+                                    <label class="form-label">Name</label>
+                                    <input class="form-control" type="text" value="<?php echo $cust['NAME']; ?>" name="name" readonly>
                                 </div>
-                                <div class="col">
-                                    <button class="btn btn-info link-light" type="button" id="custom">Custom message</button>
-                                </div>
-                            </div>
-                            <br>
-                            <form class="d-none" id="form-message" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" enctype="multipart/form-data">
-                                <input class="d-none form-control" type="text" name="status" id="status" value="<?php if($status['STATUS'] == 0) echo "0";
-                                elseif($status['STATUS'] == 1) echo "1";
-                                elseif($status['STATUS'] == 2) echo "2"; ?>" readonly disabled>
-
                                 <div>
                                     <label class="form-label">Email</label>
                                     <input class="form-control" type="text" value="<?php echo $cust['EMAIL']; ?>" name="email" readonly>
                                 </div>
                                 <div>
-                                    <label class="form-label">Message</label>
-                                    <textarea class="form-control" style="height: 150px;" id="message" name="message"></textarea>
+                                    <label class="form-label">Phone Number</label>
+                                    <input class="form-control" type="text" value="<?php echo $cust['PHONE_NUMBER']; ?>" name="phonenumber" readonly>
                                 </div>
                                 <div>
-                                    <label class="form-label">Upload files</label>
-                                    <input class="form-control" type="file" name="attachments[]" multiple="multiple">
+                                    <label class="form-label">Reference No.</label>
+                                    <input class="form-control" type="text" value="<?php echo $order['REFERENCE_NO']; ?>" name="referenceno" readonly>
+                                </div>
+                                <div>
+                                    <label class="form-label">Request Order</label>
+                                    <input class="form-control" type="text" value="<?php echo $order['REQUEST']; ?>" name="request" readonly>
+                                </div>
+                                <div>
+                                    <label class="form-label">Price (RM)</label>
+                                    <input class="form-control" type="text" name="price">
                                 </div>
                                 <br>
                                 <div class="d-grid">

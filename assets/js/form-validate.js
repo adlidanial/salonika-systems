@@ -9,26 +9,39 @@
         .forEach(function (form) {
             form.addEventListener('submit', function (event) {
                 var failed = false;
+                var alertcategory = false;
                 // console.log($("[name='chkbox[]']:checked").length);
-                
+                if($("[name='package[]']:checked").length == 0)
+                {
+                    $("#alertplan").removeClass("d-none");
+                }
+                if($("[name='package[]']:checked").length > 0)
+                {
+                    $("#alertplan").addClass("d-none");
+                }
                 if($("[name='package[]']:checked").val() == "Professional")
                 {
                     $("[name='chkbox[]']").attr('required', false);
-                    return false;
                 }
-                else if ($("[name='chkbox[]']:checked").length == 0) {
+                if ($("[name='package[]']:checked").val() == "Starter" && $("[name='chkbox[]']:checked").length < 3) {
                     $("[name='chkbox[]']").attr('required', true);
                     failed = true;
+                    alertcategory = true;
                 }
-                else {
+                if ($("[name='package[]']:checked").val() == "Starter" && $("[name='chkbox[]']:checked").length >= 3) {
                     $("[name='chkbox[]']").attr('required', false);
                 }
-                
-                if (failed === true) {
+                if(alertcategory === true)
+                    $("#alertcategory").removeClass("d-none");
+                else
+                    $("#alertcategory").addClass("d-none");
+
+
+                if (failed === true || !form.checkValidity()) {
                     event.preventDefault()
                     event.stopPropagation()
                 }
-    
+
                 form.classList.add('was-validated')
             }, false)
         })

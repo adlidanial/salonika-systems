@@ -38,6 +38,7 @@
         $_SESSION['email'] = $_POST['email'];
         $_SESSION['phonenumber'] = $_POST['phonenumber'];
         $_SESSION['price'] = $_POST['price'];
+        $_SESSION['request'] = "-";
         // $_SESSION['chkbox'] = ($_POST['package'] == "pro" ? $_POST['package'] : $_POST['chkbox']);
         $_SESSION['isRefresh'] = true;
 
@@ -83,7 +84,7 @@
         </script>";
     }
     
-    $obj = new bigData('', '', '', '', '');
+    $obj = new bigData('', '', '', '', '', '');
     $listcategory = $obj->getListPriceByCategory();
 ?>
 
@@ -99,7 +100,7 @@
 <body>
     <nav class="navbar navbar-light navbar-expand bg-light navigation-clean">
         <div class="container">
-            <a class="navbar-brand" href="#">SALONIKA SYSTEMS</a>
+            <a class="navbar-brand" href="./">SALONIKA SYSTEMS</a>
             <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"></button>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav ms-auto">
@@ -267,6 +268,9 @@
                         <div class="card shadow-sm">
                             <div class="card-body">
                                 <p class="fs-4 text-center"><strong>Plan</strong></p>
+                                <div class="alert alert-danger d-none" role="alert" id="alertplan">
+                                    <span><strong>Choose</strong> the plan</span>
+                                </div>
                                 <div class="border rounded-0 shadow-sm mb-3" style="padding: 20px;">
                                     <div class="row">
                                         <div class="col-12 col-sm-7 col-md-9 col-lg-8 col-xl-9 col-xxl-10">
@@ -286,7 +290,7 @@
                                     <div class="row">
                                         <div class="col-12 col-sm-7 col-md-9 col-lg-8 col-xl-9 col-xxl-10">
                                             <div class="form-check text-start flex-fill">
-                                                <input class="form-check-input" type="radio" name="package[]" id="formCheck-starter" style="padding: 20px;border-radius: 25px;" value="starter" required>
+                                                <input class="form-check-input" type="radio" name="package[]" id="formCheck-starter" style="padding: 20px;border-radius: 25px;" value="Starter" required>
                                                 <label class="form-check-label d-grid fw-bold" for="formCheck-starter" style="padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;">Starter<br>
                                                     <span class="text-secondary fw-normal">A simple start for everyone</span>
                                                 </label>
@@ -302,6 +306,9 @@
                                         <p class="fs-4 text-center">
                                             <strong>Category</strong>
                                         </p>
+                                        <div class="alert alert-danger d-none" role="alert" id="alertcategory">
+                                            <span><strong>Minimum</strong> choose any 3 category</span>
+                                        </div>
                                         <div class="alert alert-secondary" role="alert">
                                             <span><strong>Minimum</strong> choose any 3 category (<strong>except</strong> comment category)<strong> RM10</strong></span>
                                             <br><span>Comment category<strong> RM30</strong></span>
@@ -314,12 +321,12 @@
                                                 <div class=\"row\">
                                                     <div class=\"col-8 col-sm-7 col-md-9 col-lg-8 col-xl-9 col-xxl-10\">
                                                         <div class=\"form-check flex-grow-1\">
-                                                        <input type=\"hidden\" id='discount-".$i."' value=".$listcategory[$i]['DISCOUNT']." readonly>
-                                                        <input class=\"form-check-input checkCategory\" data-idx=".$i."  type=\"checkbox\" id='formCheck-".$i."' name=\"chkbox[]\" style=\"padding: 20px;border-radius: 25px;\" value='".$listcategory[$i]['PARAMETER_NAME']."' required>
-                                                        <label class=\"form-check-label d-flex\" for='formCheck-".$i."' style=\"padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;\">".$listcategory[$i]['PARAMETER_NAME']."
-                                                        <i class=\"fa fa-info-circle\" aria-hidden=\"true\" data-toggle=\"tooltip\" 
-                                                        data-placement=\"top\" title='".$listcategory[$i]['TOOLTIP']."'></i></label>
-                                                        
+                                                            <input type=\"hidden\" id='discount-".$i."' value=".$listcategory[$i]['DISCOUNT']." readonly>
+                                                            <input class=\"form-check-input checkCategory\" data-idx=".$i."  type=\"checkbox\" id='formCheck-".$i."' name=\"chkbox[]\" style=\"padding: 20px;border-radius: 25px;\" value='".$listcategory[$i]['PARAMETER_NAME']."' required>
+                                                            <label class=\"form-check-label d-flex\" for='formCheck-".$i."' style=\"padding-left: 20px;padding-bottom: 10px;padding-top: 10px;padding-right: 20px;\">".$listcategory[$i]['PARAMETER_NAME']."
+                                                                <i class=\"fa fa-info-circle\" aria-hidden=\"true\" data-toggle=\"tooltip\" 
+                                                                data-placement=\"top\" title='".$listcategory[$i]['TOOLTIP']."'></i>
+                                                            </label>
                                                         </div>
                                                     </div>
                                                     <div class=\"col-4 col-sm-5 col-md-3 col-lg-4 col-xl-3 col-xxl-2 text-center\">";
@@ -405,6 +412,10 @@
                             <p class="text-center">Payment method using <strong>ToyyibPay</strong></p>
                         </div>
                     </form>
+                    <hr>
+                    <div class="text-center">
+                        <label class="form-label">Did not found your favourite category? <a href="./request.php#request-form" class="text-dark"><strong>Request Here</strong></a></label>
+                    </div>
                 </div>
             </div>
         </div>

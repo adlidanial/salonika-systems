@@ -93,8 +93,12 @@
                         <div class="dropdown-menu dropdown-menu-end" style="max-height: 280px;overflow-y: auto;">
                             <h6 class="dropdown-header">Notification</h6>
                             <?php for($i=0; $i<count($result); $i++){ ?>
-                            <a class="dropdown-item" href="./queue.php?id=<?php echo $result[$i]['PK_ID']; ?>">
-                                <strong>Pending Order</strong><br>
+                            <a class="dropdown-item" href="./queue.php">
+                                <?php if($result[$i]['LIST_ORDER'] != "-"){echo "<strong>Pending Order</strong>";}
+                                else
+                                    echo "<strong>Request Order</strong>";
+                                ?>
+                                <br>
                                 <span>Payment for the order <strong><?php echo $result[$i]['REFERENCE_NO']; ?></strong>
                                 has been confirm.</span> </a>
                             <?php } ?>
@@ -103,7 +107,6 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="-32 0 512 512" width="1em" height="1em" fill="currentColor" class="fs-4">
-                                <!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. -->
                                 <path d="M224 256c70.7 0 128-57.31 128-128s-57.3-128-128-128C153.3 0 96 57.31 96 128S153.3 256 224 256zM274.7 304H173.3C77.61 304 0 381.6 0 477.3c0 19.14 15.52 34.67 34.66 34.67h378.7C432.5 512 448 496.5 448 477.3C448 381.6 370.4 304 274.7 304z"></path>
                             </svg>
                         </a>

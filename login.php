@@ -32,7 +32,7 @@
 <body>
     <nav class="navbar navbar-light navbar-expand bg-light navigation-clean">
         <div class="container">
-            <a class="navbar-brand" href="#">SALONIKA SYSTEMS</a>
+            <a class="navbar-brand" href="./">SALONIKA SYSTEMS</a>
             <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"></button>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav ms-auto">

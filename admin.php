@@ -5,6 +5,8 @@
     use PHPMailer\PHPMailer\Exception;
     require 'vendor/autoload.php';
     include './includes/constant.php';
+    require_once './includes/toyyibpay.php';
+
 
     class Admin extends dbConnect{
 
@@ -50,10 +52,10 @@
             try
             {
                 $sql = "
-                    SELECT NAME, PLACEORDER.PK_ID AS PK_ID, PLACEORDER.DATE_CREATED AS DATE_CREATED, PLACEORDER.REFERENCE_NO AS REFERENCE_NO
+                    SELECT NAME, PLACEORDER.PK_ID AS PK_ID, PLACEORDER.LIST_ORDER AS LIST_ORDER, PLACEORDER.DATE_CREATED AS DATE_CREATED, PLACEORDER.REFERENCE_NO AS REFERENCE_NO
                     FROM CUSTOMER
                     INNER JOIN PLACEORDER ON CUSTOMER.PK_ID = PLACEORDER.FK_ID_CUSTOMER
-                    WHERE PLACEORDER.STATUS = 0
+                    WHERE PLACEORDER.STATUS = 0 OR PLACEORDER.STATUS = -1
                     ORDER BY DATE_CREATED DESC
                 ";
 
@@ -76,7 +78,7 @@
                 $sql = "
                     SELECT NAME, CUSTOMER.PK_ID AS CUST_ID, PLACEORDER.PK_ID AS PK_ID, PLACEORDER.DATE_UPDATED AS DATE_UPDATED,  
                     PLACEORDER.REFERENCE_NO AS REFERENCE_NO, PLACEORDER.STATUS AS STATUS, PLACEORDER.DATE_CREATED AS DATE_CREATED,
-                    PLACEORDER.LIST_ORDER AS LIST_ORDER
+                    PLACEORDER.LIST_ORDER AS LIST_ORDER, PLACEORDER.REQUEST AS REQUEST
                     FROM CUSTOMER
                     INNER JOIN PLACEORDER ON CUSTOMER.PK_ID = PLACEORDER.FK_ID_CUSTOMER
                     WHERE PLACEORDER.STATUS <> 2
@@ -451,6 +453,106 @@
                 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 return $result;
+            }
+            catch(PDOException $e)
+            {
+                echo "<script>alert('Error here:".$e."');</script>";
+            }
+        }
+
+        public function getRequestOrderAndReferenceNoByCustomerId($id)
+        {
+            try
+            {
+                $sql = "
+                    SELECT PLACEORDER.REQUEST AS REQUEST, PLACEORDER.REFERENCE_NO AS REFERENCE_NO
+                    FROM CUSTOMER
+                    INNER JOIN PLACEORDER ON CUSTOMER.PK_ID = PLACEORDER.FK_ID_CUSTOMER
+                    WHERE CUSTOMER.PK_ID = :id
+                ";
+
+                $stmt = $this->connect()->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+                $stmt->bindParam(":id", $id);
+                $stmt->execute();
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                
+                return $result;
+            }
+            catch(PDOException $e)
+            {
+                echo "<script>alert('Error here:".$e."');</script>";
+            }
+        }
+
+        public function setBillCode($name, $email, $phonenumber, $referenceno, $price)
+        {
+            try
+            {
+                if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
+                    $link = "https";
+                else
+                    $link = "http";
+                
+                $link .= "://";
+                $link .= $_SERVER['HTTP_HOST'];   
+                $link .= chop(dirname($_SERVER['REQUEST_URI']), '\\');
+                $linkreceipt .= '/receipt.php';
+                $data_string = array(
+                    'userSecretKey'=> SECRET_KEY,
+                    'categoryCode'=> CATEGORY_CODE,
+                    'billName'=> BILL_NAME,
+                    'billDescription'=> BILL_DESCRIPTION,
+                    'billPriceSetting'=>1,
+                    'billPayorInfo'=>1,
+                    'billAmount'=>$price * 100,
+                    'billReturnUrl'=>$link,
+                    'billCallbackUrl'=>$linkreceipt,
+                    'billExternalReferenceNo'=> $referenceno,
+                    'billTo'=>$name,
+                    'billEmail'=>$email,
+                    'billPhone'=>$phonenumber,
+                    'billSplitPayment'=>0,
+                    'billSplitPaymentArgs'=>'',
+                    'billPaymentChannel'=>0,
+                );
+        
+                $curl = curl_init();
+                curl_setopt($curl, CURLOPT_POST, 1);
+                // Development ToyyibPay
+                curl_setopt($curl, CURLOPT_URL, 'https://dev.toyyibpay.com/index.php/api/createBill');  
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
+                curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+                $result = curl_exec($curl);
+                $info = curl_getinfo($curl);  
+                curl_close($curl);
+                $obj = json_decode($result, true);
+        
+                $billcode = $obj[0]['BillCode'];
+
+                return $billcode;
+            }
+            catch(PDOException $e)
+            {
+                echo "<script>alert('Error here:".$e."');</script>";
+            }
+        }
+
+        public function saveBill($userid, $billcode)
+        {
+            try
+            {
+                $sql = "
+                    INSERT INTO BILL(FK_ID_CUSTOMER, BILL_CODE, DATE_UPDATED)
+                    VALUES (?, ?, NOW())
+                ";
+
+                $stmt = $this->connect()->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+                $isChecked = $stmt->execute([$userid, $billcode]);
+                if($isChecked)
+                    return true;
+                else
+                    return false;
             }
             catch(PDOException $e)
             {

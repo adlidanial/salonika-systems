@@ -38,7 +38,11 @@
                             <h6 class="dropdown-header">Notification</h6>
                             <?php for($i=0; $i<count($result); $i++){ ?>
                             <a class="dropdown-item" href="./queue.php">
-                                <strong>Pending Order</strong><br>
+                                <?php if($result[$i]['LIST_ORDER'] != "-"){echo "<strong>Pending Order</strong>";}
+                                else
+                                    echo "<strong>Request Order</strong>";
+                                ?>
+                                <br>
                                 <span>Payment for the order <strong><?php echo $result[$i]['REFERENCE_NO']; ?></strong>
                                 has been confirm.</span> </a>
                             <?php } ?>
@@ -69,7 +73,7 @@
                             <?php for($i=0; $i<count($result); $i++){ ?>
                             <div class="alert alert-secondary" role="alert">
                                 <div class="d-flex">
-                                    <h4>ORDER #<?php echo $result[$i]['REFERENCE_NO']; ?></h4>
+                                    <h4><?php if($result[$i]['LIST_ORDER'] != "-")echo "PENDING"; else echo "REQUEST"; ?> ORDER #<?php echo $result[$i]['REFERENCE_NO']; ?></h4>
                                     <p class="d-flex flex-grow-1 justify-content-end">
                                         <?php 
                                             $date = new DateTime($result[$i]['DATE_CREATED']); 

@@ -41,7 +41,11 @@
                             <h6 class="dropdown-header">Notification</h6>
                             <?php for($i=0; $i<count($result); $i++){ ?>
                             <a class="dropdown-item" href="./queue.php">
-                                <strong>Pending Order</strong><br>
+                                <?php if($result[$i]['LIST_ORDER'] != "-"){echo "<strong>Pending Order</strong>";}
+                                else
+                                    echo "<strong>Request Order</strong>";
+                                ?>
+                                <br>
                                 <span>Payment for the order <strong><?php echo $result[$i]['REFERENCE_NO']; ?></strong>
                                 has been confirm.</span> </a>
                             <?php } ?>
@@ -94,7 +98,7 @@
                                                                 echo "<td>".$count++."</td>";
                                                                 echo "<td>".$listorder[$i]['NAME']."</td>";
                                                                 echo "<td>".$listorder[$i]['REFERENCE_NO']."</td>";
-                                                                echo "<td>";if($listorder[$i]['STATUS'] == 0) echo "Pending"; elseif($listorder[$i]['STATUS'] == 1) echo "Process"; elseif($listorder[$i]['STATUS'] == 2) echo "Done";"</td>";
+                                                                echo "<td>";if($listorder[$i]['STATUS'] == 0) echo "Pending"; elseif($listorder[$i]['STATUS'] == 1) echo "Process"; elseif($listorder[$i]['STATUS'] == 2) echo "Done"; elseif($listorder[$i]['STATUS'] == -1) echo "Requested";"</td>";
                                                                 echo "<td>".date_format($date, "d F Y h:i A")."</td>";
                                                                 echo "<td class='d-none'></td>";
                                                                 echo "</tr>";
