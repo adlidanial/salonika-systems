@@ -129,7 +129,7 @@
                                             </tr>
                                             <tr>
                                                 <td><strong>Description</strong></td>
-                                                <td><?php echo $listorder; ?></td>
+                                                <td><?php echo (!empty($listorder) ? $listorder : $request); ?></td>
                                             </tr>
                                         </tbody>
                                     </table>
