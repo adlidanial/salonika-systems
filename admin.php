@@ -615,7 +615,7 @@
                 $sql = "
                     SELECT *
                     FROM BILL
-                    WHERE FK_CUSTOMER_ID = :id
+                    WHERE FK_ID_CUSTOMER = :id
                 ";
 
                 $stmt = $this->connect()->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
