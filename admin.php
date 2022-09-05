@@ -559,6 +559,31 @@
             }
         }
 
+        public function updateBill($userid, $billcode)
+        {
+            try
+            {
+                $sql = "
+                    UPDATE BILL SET BILL_CODE = :billcode, DATE_UPDATED = NOW()
+                    WHERE FK_ID_CUSTOMER = :userid
+                ";
+
+                $stmt = $this->connect()->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+                $stmt->bindParam(":billcode", $billcode);
+                $stmt->bindParam(":userid", $userid);
+                $isChecked = $stmt->execute();
+                
+                if($isChecked)
+                    return true;
+                else
+                    return false;
+            }
+            catch(PDOException $e)
+            {
+                echo "<script>alert('Error here:".$e."');</script>";
+            }
+        }
+
         public function updatePriceByRefereceNo($price, $referenceno)
         {
             try
@@ -576,6 +601,54 @@
                     return true;
                 else
                     return false;
+            }
+            catch(PDOException $e)
+            {
+                echo "<script>alert('Error here:".$e."');</script>";
+            }
+        }
+
+        public function getBillCodeByCustomerId($id)
+        {
+            try
+            {
+                $sql = "
+                    SELECT PLACEORDER.REQUEST AS REQUEST, PLACEORDER.REFERENCE_NO AS REFERENCE_NO
+                    FROM CUSTOMER
+                    INNER JOIN PLACEORDER ON CUSTOMER.PK_ID = PLACEORDER.FK_ID_CUSTOMER
+                    WHERE CUSTOMER.PK_ID = :id
+                ";
+
+                $stmt = $this->connect()->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+                $stmt->bindParam(":id", $id);
+                $stmt->execute();
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                
+                return $result;
+            }
+            catch(PDOException $e)
+            {
+                echo "<script>alert('Error here:".$e."');</script>";
+            }
+        }
+
+        public function getExistBillByCustomerId($id)
+        {
+            try
+            {
+                $sql = "
+                    SELECT *
+                    FROM BILL
+                    WHERE FK_CUSTOMER_ID = :id
+                ";
+
+                $stmt = $this->connect()->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+                $stmt->bindParam(":id", $id);
+                $isExist = $stmt->execute();
+                if($isExist)
+                    return true;
+                else
+                    return false;                
             }
             catch(PDOException $e)
             {

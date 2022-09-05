@@ -15,36 +15,50 @@
             $phonenumber = $_POST['phonenumber'];
             $referenceno = $_POST['referenceno'];
             $price = $_POST['price'];
+            
             $billcode = $admin->setBillCode($name, $email, $phonenumber, $referenceno, $price);
             if(isset($billcode))
             {
-                if($admin->saveBill($userid, $billcode))
+                if($admin->getExistBillByCustomerId($userid))
                 {
-                    if($admin->updatePriceByRefereceNo($price, $referenceno))
+                    if(!$admin->updateBill($userid, $billcode))
                     {
                         echo "
                         <script>
-                        window.alert('Bill code created and save.');
-                        window.location.href='./queue.php';
-                        </script>";
-                    }
-                    else
-                    {
-                        echo "
-                        <script>
-                        window.alert('Cannot update price.');
+                        window.alert('Bill code cannot update.');
                         window.location.href='./queue.php';
                         </script>";
                     }
                 }
                 else
                 {
+                    if(!$admin->saveBill($userid, $billcode))
+                    {
+                        echo "
+                        <script>
+                        window.alert('Bill code cannot save.');
+                        window.location.href='./queue.php';
+                        </script>";
+                    }
+                }
+
+                if($admin->updatePriceByRefereceNo($price, $referenceno))
+                {
                     echo "
                     <script>
-                    window.alert('Bill code cannot save.');
+                    window.alert('Bill code save successful.');
                     window.location.href='./queue.php';
                     </script>";
                 }
+                else
+                {
+                    echo "
+                    <script>
+                    window.alert('Cannot update price.');
+                    window.location.href='./queue.php';
+                    </script>";
+                }
+                
             }
             else
             {
