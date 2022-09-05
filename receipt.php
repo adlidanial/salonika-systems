@@ -61,6 +61,13 @@
                 window.alert('You have successful pay. We will update the order from your email.');
                 </script>";
             }
+            else
+            {
+                echo "
+                <script>
+                window.alert('Cannot update order.');
+                </script>";
+            }
         }
         else
         {
