@@ -184,11 +184,11 @@
 
                 $stmt = $this->connect()->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
                 $stmt->bindParam(":referenceno", $referenceno);
-                $result = $stmt->execute();
-                if($result->rowCount() > 0)
+                $isCheck = $stmt->execute();
+                if($isCheck)
                     return [true, $result];
                 else
-                    return [false, ""];
+                    return [false, $result];
             }
             catch(PDOException $e)
             {
