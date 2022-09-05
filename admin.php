@@ -496,7 +496,6 @@
                 $link .= "://";
                 $link .= $_SERVER['HTTP_HOST'];   
                 $link .= chop(dirname($_SERVER['REQUEST_URI']), '\\');
-                $link .= 'receipt.php';
                 $data_string = array(
                     'userSecretKey'=> SECRET_KEY,
                     'categoryCode'=> CATEGORY_CODE,
@@ -505,8 +504,8 @@
                     'billPriceSetting'=>1,
                     'billPayorInfo'=>1,
                     'billAmount'=>$price * 100,
-                    'billReturnUrl'=>$link,
-                    'billCallbackUrl'=>$link,
+                    'billReturnUrl'=>$link. '/receipt.php',
+                    // 'billCallbackUrl'=>,
                     'billExternalReferenceNo'=> $referenceno,
                     'billTo'=>$name,
                     'billEmail'=>$email,
