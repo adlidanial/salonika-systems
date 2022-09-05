@@ -48,9 +48,8 @@
     else if(isset($_GET["order_id"]))
     {
         $customer = new bigData("-", "-", "-", "-", "-", "-");
-        $result = $customer->getExistReferenceNo($_GET["order_id"]);
 
-        if(isset($result))
+        if($customer->getExistReferenceNo($_GET["order_id"]))
         {
             if($customer->updateOrder($_GET['transaction_id'], $_GET['status_id'], 0, $_GET["order_id"]))
             {

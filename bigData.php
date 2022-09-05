@@ -185,10 +185,10 @@
                 $stmt = $this->connect()->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
                 $stmt->bindParam(":referenceno", $referenceno);
                 $stmt->execute();
-                $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                return $result;
-
+                if($stmt->rowCount() > 0)
+                    return true;
+                else
+                    return false;
             }
             catch(PDOException $e)
             {

@@ -496,7 +496,7 @@
                 $link .= "://";
                 $link .= $_SERVER['HTTP_HOST'];   
                 $link .= chop(dirname($_SERVER['REQUEST_URI']), '\\');
-                $link .= '/receipt.php';
+                $link .= 'receipt.php';
                 $data_string = array(
                     'userSecretKey'=> SECRET_KEY,
                     'categoryCode'=> CATEGORY_CODE,
