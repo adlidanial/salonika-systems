@@ -496,7 +496,7 @@
                 $link .= "://";
                 $link .= $_SERVER['HTTP_HOST'];   
                 $link .= chop(dirname($_SERVER['REQUEST_URI']), '\\');
-                $linkreceipt .= '/receipt.php';
+                $link .= '/receipt.php';
                 $data_string = array(
                     'userSecretKey'=> SECRET_KEY,
                     'categoryCode'=> CATEGORY_CODE,
@@ -505,8 +505,8 @@
                     'billPriceSetting'=>1,
                     'billPayorInfo'=>1,
                     'billAmount'=>$price * 100,
-                    'billReturnUrl'=>$linkreceipt,
-                    'billCallbackUrl'=>$linkreceipt,
+                    'billReturnUrl'=>$link,
+                    'billCallbackUrl'=>$link,
                     'billExternalReferenceNo'=> $referenceno,
                     'billTo'=>$name,
                     'billEmail'=>$email,
@@ -549,6 +549,30 @@
 
                 $stmt = $this->connect()->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
                 $isChecked = $stmt->execute([$userid, $billcode]);
+                if($isChecked)
+                    return true;
+                else
+                    return false;
+            }
+            catch(PDOException $e)
+            {
+                echo "<script>alert('Error here:".$e."');</script>";
+            }
+        }
+
+        public function updatePriceByRefereceNo($price, $referenceno)
+        {
+            try
+            {
+                $sql = "
+                    UPDATE PLACEORDER SET PRICE = :price, DATE_UPDATED = NOW()
+                    WHERE REFERENCE_NO = :referenceno
+                ";
+
+                $stmt = $this->connect()->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+                $stmt->bindParam(":price", $price);
+                $stmt->bindParam(":referenceno", $referenceno);
+                $isChecked = $stmt->execute();
                 if($isChecked)
                     return true;
                 else
