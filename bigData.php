@@ -201,14 +201,14 @@
             try
             {
                 $sql = "
-                    UPDATE PLACEORDER SET TOYYIBPAY_TRANSACTIONID = :transactionid, TOYYIBPAY_STATUS = :toyyibpaystatus,
+                    UPDATE PLACEORDER SET TOYYIBPAY_TRANSACTIONID = :transactionid, TOYYIBPAY_STATUSID = :toyyibpaystatusid,
                     STATUS = :status, DATE_UPDATED = NOW()
                     WHERE REFERENCE_NO = :referenceno
                 ";
 
                 $stmt = $this->connect()->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
                 $stmt->bindParam(":transactionid", $transactionid);
-                $stmt->bindParam(":toyyibpaystatus", $toyyibpaystatus);
+                $stmt->bindParam(":toyyibpaystatusid", $toyyibpaystatusid);
                 $stmt->bindParam(":status", $status);
                 $stmt->bindParam(":referenceno", $referenceno);
                 $result = $stmt->execute();
