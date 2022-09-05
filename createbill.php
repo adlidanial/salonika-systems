@@ -20,11 +20,22 @@
             {
                 if($admin->saveBill($userid, $billcode))
                 {
-                    echo "
-                    <script>
-                    window.alert('Bill code created and save.');
-                    window.location.href='./queue.php';
-                    </script>";
+                    if($admin->updatePriceByRefereceNo($price, $referenceno))
+                    {
+                        echo "
+                        <script>
+                        window.alert('Bill code created and save.');
+                        window.location.href='./queue.php';
+                        </script>";
+                    }
+                    else
+                    {
+                        echo "
+                        <script>
+                        window.alert('Cannot update price.');
+                        window.location.href='./queue.php';
+                        </script>";
+                    }
                 }
                 else
                 {
