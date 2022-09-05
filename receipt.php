@@ -5,7 +5,7 @@
     if(isset($_SESSION["name"]) && isset($_SESSION["email"]) && isset($_SESSION["phonenumber"]) && isset($_SESSION["price"]) && 
     isset($_SESSION["chkbox"]) && isset($_GET['transaction_id']) && isset($_GET['status_id']))
     {
-        $customer = new bigData($_SESSION['name'], $_SESSION['email'], $_SESSION['phonenumber'], $_SESSION['price'], $_SESSION['chkbox']);
+        $customer = new bigData($_SESSION['name'], $_SESSION['email'], $_SESSION['phonenumber'], $_SESSION['price'], $_SESSION['chkbox'], "-");
 
         if(empty($_SESSION['isRefresh'])) {
             list($name, $email, $phonenumber) = $customer->getCustomerById($_SESSION['lastid']);
@@ -15,13 +15,13 @@
         {
             unset($_SESSION['isRefresh']);
             list($isChecked, $lastid) = $customer->saveCustomer();
-            $_SESSION['lastid'] = $lastid;
+            $_SESSION['lastid'] = $lastid;  
             if($isChecked)
             {
                 if($customer->saveOrder($lastid, $_SESSION['referenceno'], $_GET['transaction_id'], $_GET['status_id']))
                 {
                     list($name, $email, $phonenumber) = $customer->getCustomerById($lastid);
-                    list($listorder, $referenceno, $transid, $statusid, $price, $date) = $customer->getOrderByCustomerId($lastid);
+                    list($listorder, $request, $referenceno, $transid, $statusid, $price, $date) = $customer->getOrderByCustomerId($lastid);
         
                     echo "
                     <script>
@@ -44,6 +44,33 @@
                 </script>";
             }
         }  
+    }
+    else if(isset($_GET["order_id"]))
+    {
+        $customer = new bigData("-", "-", "-", "-", "-", "-");
+        $result = $customer->getExistReferenceNo($_GET["order_id"]);
+
+        if(isset($result))
+        {
+            if($customer->updateOrder($_GET['transaction_id'], $_GET['status_id'], 0, $_GET["order_id"]))
+            {
+                list($name, $email, $phonenumber) = $customer->getCustomerById($result['FK_ID_CUSTOMER']);
+                list($listorder, $request, $referenceno, $transid, $statusid, $price, $date) = $customer->getOrderByCustomerId($result['FK_ID_CUSTOMER']);
+
+                echo "
+                <script>
+                window.alert('You have successful pay. We will update the order from your email.');
+                </script>";
+            }
+        }
+        else
+        {
+            echo "
+            <script>
+            window.alert('Invalid order. Please try again later.');
+            </script>";
+        }
+
     }
     else
     {

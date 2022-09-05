@@ -112,13 +112,14 @@
                 $stmt->execute();
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
                 $listorder = $result['LIST_ORDER'];
+                $request = $result['REQUEST'];
                 $referenceno = $result['REFERENCE_NO'];
                 $transid = $result['TOYYIBPAY_TRANSACTIONID'];
                 $statusid = $result['TOYYIBPAY_STATUSID'];
                 $price = $result['PRICE'];
                 $date = $result['DATE_CREATED'];
 
-                return [$listorder, $referenceno, $transid, $statusid, $price, $date];
+                return [$listorder, $request, $referenceno, $transid, $statusid, $price, $date];
 
             }
             catch(PDOException $e)
@@ -161,6 +162,57 @@
 
                 $stmt = $this->connect()->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
                 $result = $stmt->execute([$lastid, "-", $this->requestorder, $referenceno, $transid, $statusid, $this->totalprice, -1]);
+                if($result)
+                    return true;
+                else
+                    return false;
+            }
+            catch(PDOException $e)
+            {
+                echo "<script>alert('Error here:".$e."');</script>";
+            }
+        }
+
+        public function getExistReferenceNo($referenceno)
+        {
+            try
+            {
+                $sql = "
+                    SELECT * FROM PLACEORDER
+                    WHERE REFERENCE_NO = :referenceno
+                ";
+
+                $stmt = $this->connect()->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+                $stmt->bindParam(":referenceno", $referenceno);
+                $stmt->execute();
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                return $result;
+
+            }
+            catch(PDOException $e)
+            {
+                echo "<script>alert('Error here:".$e."');</script>";
+            }
+        }
+
+        public function updateOrder($transactionid, $toyyibpaystatus, $status, $referenceno)
+        {
+            try
+            {
+                $sql = "
+                    UPDATE PLACEORDER SET TOYYIBPAY_TRANSACTIONID = :transactionid, TOYYIBPAY_STATUS = :toyyibpaystatus,
+                    STATUS = :status, DATE_UPDATED = NOW()
+                    WHERE REFERENCE_NO = :referenceno
+                ";
+
+                $stmt = $this->connect()->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+                $stmt->bindParam(":transactionid", $transactionid);
+                $stmt->bindParam(":toyyibpaystatus", $toyyibpaystatus);
+                $stmt->bindParam(":status", $status);
+                $stmt->bindParam(":referenceno", $referenceno);
+
+                $stmt->execute();
                 if($result)
                     return true;
                 else

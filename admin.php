@@ -505,7 +505,7 @@
                     'billPriceSetting'=>1,
                     'billPayorInfo'=>1,
                     'billAmount'=>$price * 100,
-                    'billReturnUrl'=>$link,
+                    'billReturnUrl'=>$linkreceipt,
                     'billCallbackUrl'=>$linkreceipt,
                     'billExternalReferenceNo'=> $referenceno,
                     'billTo'=>$name,
