@@ -2,7 +2,14 @@ $('#quick').click(function () {
     $('#form-message').removeAttr("class");
     let message = "Greeting\r\n\r\n";
     let status = $('#status').val();
-    if(status === "0")
+    let billcode = $('#billcode').val();
+
+    if(status === "-1")
+    {
+        message += "We have received your request and you need" + 
+        " to make a payment. Pay at https://dev.toyyibpay.com/" + billcode;
+    }
+    else if(status === "0")
     {
         message += "We have received your order and we will" + 
         " update through your active email.";

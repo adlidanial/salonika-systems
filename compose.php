@@ -26,6 +26,7 @@
         {
             $cust = $admin->getCustomerById($_GET['userid']);
             $status = $admin->getStatusOrderByCustomerId($_GET['userid']);
+            $billcode = $admin->getBillCodeByCustomerId($_GET['userid']);
             if(count($cust) == 0)
             {
                 echo "
@@ -112,10 +113,10 @@
                             </div>
                             <br>
                             <form class="d-none" id="form-message" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" enctype="multipart/form-data">
-                                <input class="d-none form-control" type="text" name="status" id="status" value="<?php if($status['STATUS'] == 0) echo "0";
+                                <input class="d-none form-control" type="text" name="status" id="status" value="<?php if($status['STATUS'] == -1) echo "-1"; elseif($status['STATUS'] == 0) echo "0";
                                 elseif($status['STATUS'] == 1) echo "1";
                                 elseif($status['STATUS'] == 2) echo "2"; ?>" readonly disabled>
-
+                                <input class="d-none form-control" type="text" name="billcode" id="billcode" value="<?php echo $billcode; ?>" readonly disabled>
                                 <div>
                                     <label class="form-label">Email</label>
                                     <input class="form-control" type="text" value="<?php echo $cust['EMAIL']; ?>" name="email" readonly>

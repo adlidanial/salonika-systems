@@ -608,30 +608,6 @@
             }
         }
 
-        public function getBillCodeByCustomerId($id)
-        {
-            try
-            {
-                $sql = "
-                    SELECT PLACEORDER.REQUEST AS REQUEST, PLACEORDER.REFERENCE_NO AS REFERENCE_NO
-                    FROM CUSTOMER
-                    INNER JOIN PLACEORDER ON CUSTOMER.PK_ID = PLACEORDER.FK_ID_CUSTOMER
-                    WHERE CUSTOMER.PK_ID = :id
-                ";
-
-                $stmt = $this->connect()->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-                $stmt->bindParam(":id", $id);
-                $stmt->execute();
-                $result = $stmt->fetch(PDO::FETCH_ASSOC);
-                
-                return $result;
-            }
-            catch(PDOException $e)
-            {
-                echo "<script>alert('Error here:".$e."');</script>";
-            }
-        }
-
         public function getExistBillByCustomerId($id)
         {
             try
@@ -649,6 +625,29 @@
                     return true;
                 else
                     return false;                
+            }
+            catch(PDOException $e)
+            {
+                echo "<script>alert('Error here:".$e."');</script>";
+            }
+        }
+
+        public function getBillCodeByCustomerId($id)
+        {
+            try
+            {
+                $sql = "
+                    SELECT BILL_CODE
+                    FROM BILL
+                    WHERE FK_CUSTOMER_ID = :id
+                ";
+
+                $stmt = $this->connect()->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+                $stmt->bindParam(":id", $id);
+                $stmt->execute();
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                
+                return $result;               
             }
             catch(PDOException $e)
             {
