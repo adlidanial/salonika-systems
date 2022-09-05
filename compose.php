@@ -116,7 +116,7 @@
                                 <input class="d-none form-control" type="text" name="status" id="status" value="<?php if($status['STATUS'] == -1) echo "-1"; elseif($status['STATUS'] == 0) echo "0";
                                 elseif($status['STATUS'] == 1) echo "1";
                                 elseif($status['STATUS'] == 2) echo "2"; ?>" readonly disabled>
-                                <input class="d-none form-control" type="text" name="billcode" id="billcode" value="<?php echo $billcode; ?>" readonly disabled>
+                                <input class="d-none form-control" type="text" name="billcode" id="billcode" value="<?php echo $billcode['BILL_CODE']; ?>" readonly disabled>
                                 <div>
                                     <label class="form-label">Email</label>
                                     <input class="form-control" type="text" value="<?php echo $cust['EMAIL']; ?>" name="email" readonly>
