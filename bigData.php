@@ -185,6 +185,8 @@
                 $stmt = $this->connect()->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
                 $stmt->bindParam(":referenceno", $referenceno);
                 $isCheck = $stmt->execute();
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
                 if($isCheck)
                     return [true, $result];
                 else
@@ -196,7 +198,7 @@
             }
         }
 
-        public function updateOrder($transactionid, $toyyibpaystatus, $status, $referenceno)
+        public function updateOrder($transactionid, $toyyibpaystatusid, $status, $referenceno)
         {
             try
             {
