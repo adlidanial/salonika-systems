@@ -211,8 +211,8 @@
                 $stmt->bindParam(":toyyibpaystatus", $toyyibpaystatus);
                 $stmt->bindParam(":status", $status);
                 $stmt->bindParam(":referenceno", $referenceno);
-
-                $stmt->execute();
+                $result = $stmt->execute();
+                
                 if($result)
                     return true;
                 else
